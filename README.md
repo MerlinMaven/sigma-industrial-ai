@@ -84,8 +84,8 @@ Sigma/
 
 ```bash
 # Cloner le dépôt
-git clone https://github.com/<votre-utilisateur>/Sigma.git
-cd Sigma
+git clone https://github.com/MerlinMaven/sigma-industrial-ai.git
+cd sigma-industrial-ai
 
 # Installer les dépendances
 pip install -r requirements.txt
