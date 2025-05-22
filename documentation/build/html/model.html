@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model &mdash; Sigma  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deployment and Interface" href="deploiment.html" />
+    <link rel="prev" title="Industrial Process Simulation" href="data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Sigma
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table des matières</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#context-and-scope">Context and Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#objectives">Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#project-pipeline">Project Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Team</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="team.html#supervisor">Supervisor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="team.html#team-members">Team Members</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Industrial Process Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#simulation-description">Simulation Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#cell-components">Cell Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data.html#ur10e-robots">UR10e Robots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#conveyors">Conveyors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#vertical-linear-rail">Vertical Linear Rail</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#simulation-video">Simulation Video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#data-collection">Data Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#local-workflow">Local Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-selection">Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarking-methodology">Benchmarking Methodology</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#evaluation-procedure">Evaluation Procedure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluation-metrics">Evaluation Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#experimental-protocol">Experimental Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hyperparameters">Hyperparameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#results-and-analysis">Results and Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#global-comparative-table">Global Comparative Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-analysis-by-model">Detailed Analysis by Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#discussion">Discussion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recommendations">Recommendations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-code">Implementation Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploiment.html">Deployment and Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploiment.html#final-step-of-the-pipeline-deployment">Final Step of the Pipeline: Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deploiment.html#why-streamlit">Why Streamlit?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deploiment.html#interface-components">Interface Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deploiment.html#monitored-components">Monitored Components</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deploiment.html#local-deployment-vs-online-version">Local Deployment vs. Online Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploiment.html#interface-preview">Interface Preview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploiment.html#interactive-controls">Interactive Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploiment.html#access-to-the-source-code">Access to the Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Sigma</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="model">
+<h1>Model<a class="headerlink" href="#model" title="Link to this heading"></a></h1>
+<p>Sigma is based on the premise that industrial systems exhibit characteristic normal behavioral patterns, referred to as “signatures.” By learning these signatures, the model can detect deviations indicative of anomalies or degradation, enabling accurate estimation of the Remaining Useful Life (RUL).</p>
+<p>Given that the system operates in an environment where only normal (non-anomalous) data is available, we utilize unsupervised learning techniques. This is because the model is designed to learn the normal operating conditions without the need for labeled anomaly data. By learning the “signature” of normal behavior, the model can effectively identify any deviation from these learned patterns, which signals an anomaly or potential failure.</p>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>The Sigma-RUL system comprises the following components:</p>
+<ol class="arabic simple">
+<li><p><strong>First Encoder</strong>: Encodes raw sensor signals into compressed latent representations termed “signatures.”</p></li>
+<li><p><strong>Isolation Forest</strong>: Applied to the bottleneck representations of the first autoencoder to detect anomalies in real-time.</p></li>
+<li><p><strong>Second Dual-Head Autoencoder</strong>:</p>
+<ul class="simple">
+<li><p><strong>Decoder 1 – Reconstructed Series</strong>: Reconstructs the learned signatures to verify data integrity.</p></li>
+<li><p><strong>Decoder 2 – Forecasted Series</strong>: Predicts the future behavior of the signatures for early degradation detection.</p></li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sigma combines Autoencoders and Isolation Forest for multi-perspective anomaly detection. The Autoencoders detect gradual changes in temporal patterns, while Isolation Forest identifies abrupt outliers in the latent space. This hybrid approach enhances RUL estimation by reducing false positives/negatives and capturing anomalies across different degradation stages.</p>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="_static/model.png"><img alt="Robot Joint Position Over Time" src="_static/model.png" style="width: 800px;" /></a>
+</figure>
+</section>
+<section id="model-selection">
+<h2>Model Selection<a class="headerlink" href="#model-selection" title="Link to this heading"></a></h2>
+<p>The following LSTM-based autoencoder architectures are implemented and available for use within the Sigma-RUL framework:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Linear-AE</p></td>
+<td><p>Autoencoder with linear layers only</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSTM-AE</p></td>
+<td><p>Autoencoder based on unidirectional LSTM cells</p></td>
+</tr>
+<tr class="row-even"><td><p>BiLSTM-AE</p></td>
+<td><p>Bidirectional LSTM to capture temporal dependencies</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAE</p></td>
+<td><p>Convolutional Autoencoder for extracting local features</p></td>
+</tr>
+<tr class="row-even"><td><p>ConvBiLSTM-AE</p></td>
+<td><p>Combination of CNN and BiLSTM for robust temporal modeling</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="benchmarking-methodology">
+<h2>Benchmarking Methodology<a class="headerlink" href="#benchmarking-methodology" title="Link to this heading"></a></h2>
+<section id="evaluation-procedure">
+<h3>Evaluation Procedure<a class="headerlink" href="#evaluation-procedure" title="Link to this heading"></a></h3>
+<p>For each architecture:</p>
+<ol class="arabic simple">
+<li><p>Implemented as the first autoencoder for signature generation.</p></li>
+<li><p>Implemented as the second dual-head autoencoder.</p></li>
+<li><p>Performance evaluated in terms of:</p>
+<ul class="simple">
+<li><p>Quality of signature reconstruction.</p></li>
+<li><p>Accuracy of future behavior prediction.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="evaluation-metrics">
+<h3>Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Application</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MSE</p></td>
+<td><p>Mean Squared Error</p></td>
+<td><p>Signature reconstruction</p></td>
+</tr>
+<tr class="row-odd"><td><p>MAE</p></td>
+<td><p>Mean Absolute Error</p></td>
+<td><p>Signature reconstruction</p></td>
+</tr>
+<tr class="row-even"><td><p>RMSE</p></td>
+<td><p>Root Mean Squared Error</p></td>
+<td><p>Future behavior prediction</p></td>
+</tr>
+<tr class="row-odd"><td><p>MAPE</p></td>
+<td><p>Mean Absolute Percentage Error</p></td>
+<td><p>RUL estimation</p></td>
+</tr>
+<tr class="row-even"><td><p>Inference Time</p></td>
+<td><p>Duration of model inference</p></td>
+<td><p>Real-time applicability</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="experimental-protocol">
+<h2>Experimental Protocol<a class="headerlink" href="#experimental-protocol" title="Link to this heading"></a></h2>
+<section id="data-preprocessing">
+<h3>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Normalization</strong>: Apply z-score or min-max normalization based on data distribution.</p></li>
+<li><p><strong>Segmentation</strong>: Divide time series into fixed-size windows.</p></li>
+<li><p><strong>Data Augmentation</strong>: Apply identical augmentation techniques across all models.</p></li>
+</ol>
+</section>
+<section id="hyperparameters">
+<h3>Hyperparameters<a class="headerlink" href="#hyperparameters" title="Link to this heading"></a></h3>
+<p>Optimize the following hyperparameters for each architecture:</p>
+<ul class="simple">
+<li><p>Bottleneck size (latent dimension)</p></li>
+<li><p>Number of layers</p></li>
+<li><p>Units per layer</p></li>
+<li><p>Learning rate</p></li>
+<li><p>Activation function</p></li>
+</ul>
+<p>Optimization is performed via cross-validation using grid search or Bayesian optimization.</p>
+</section>
+</section>
+<section id="results-and-analysis">
+<h2>Results and Analysis<a class="headerlink" href="#results-and-analysis" title="Link to this heading"></a></h2>
+<section id="global-comparative-table">
+<h3>Global Comparative Table<a class="headerlink" href="#global-comparative-table" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>MSE Reconstruction</p></th>
+<th class="head"><p>RMSE Prediction</p></th>
+<th class="head"><p>MAPE RUL</p></th>
+<th class="head"><p>Training Time</p></th>
+<th class="head"><p>Inference Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Linear-AE</p></td>
+<td><p>[To be completed]</p></td>
+<td colspan="4"><p>[To be completed] | [To be completed] | [To be completed] | [To be completed]</p></td>
+</tr>
+<tr class="row-odd"><td><p>LSTM-AE</p></td>
+<td><p>[To be completed]</p></td>
+<td colspan="4"><p>[To be completed] | [To be completed] | [To be completed] | [To be completed]</p></td>
+</tr>
+<tr class="row-even"><td><p>BiLSTM-AE</p></td>
+<td><p>[To be completed]</p></td>
+<td colspan="4"><p>[To be completed] | [To be completed] | [To be completed] | [To be completed]</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAE</p></td>
+<td><p>[To be completed]</p></td>
+<td colspan="4"><p>[To be completed] | [To be completed] | [To be completed] | [To be completed]</p></td>
+</tr>
+<tr class="row-even"><td><p>ConvBiLSTM-AE</p></td>
+<td><p>[To be completed]</p></td>
+<td colspan="4"><p>[To be completed] | [To be completed] | [To be completed] | [To be completed]</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="detailed-analysis-by-model">
+<h3>Detailed Analysis by Model<a class="headerlink" href="#detailed-analysis-by-model" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Linear-AE</strong>: [To be completed]</p></li>
+<li><p><strong>LSTM-AE</strong>: [To be completed]</p></li>
+<li><p><strong>BiLSTM-AE</strong>: [To be completed]</p></li>
+<li><p><strong>CAE</strong>: [To be completed]</p></li>
+<li><p><strong>ConvBiLSTM-AE</strong>: [To be completed]</p></li>
+</ul>
+</section>
+</section>
+<section id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Link to this heading"></a></h2>
+</section>
+<section id="recommendations">
+<h2>Recommendations<a class="headerlink" href="#recommendations" title="Link to this heading"></a></h2>
+<p>Based on the benchmarking results, we recommend:</p>
+<ol class="arabic simple">
+<li><p>For signature generation autoencoder: [To be completed]</p></li>
+<li><p>For dual-head autoencoder: [To be completed]</p></li>
+<li><p>Optimal hyperparameter configurations: [To be completed]</p></li>
+</ol>
+<section id="implementation-code">
+<h3>Implementation Code<a class="headerlink" href="#implementation-code" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example code for implementing the different architectures</span>
+<span class="c1"># Will be provided after the experimentation phase</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data.html" class="btn btn-neutral float-left" title="Industrial Process Simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deploiment.html" class="btn btn-neutral float-right" title="Deployment and Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, IATD-SI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
