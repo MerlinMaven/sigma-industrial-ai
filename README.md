@@ -91,8 +91,6 @@ cd sigma-industrial-ai
 # Installer les dépendances
 pip install -r requirements.txt
 
-# Lancer l’application
-streamlit run app/main.py
 ```
 
 ---
