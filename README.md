@@ -57,13 +57,14 @@ En combinant **Deep Learning**, **séries temporelles** et **détection d’anom
 
 ```bash
 Sigma/
-├── data/           # Données simulées (robots, convoyeurs, rails)
-├── models/         # Modèles entraînés (LSTM, Isolation Forest)
-├── app/            # Interface utilisateur Streamlit
-├── notebooks/      # Analyses et visualisations
-├── src/            # Modules IA (prétraitement, détection, etc.)
-├── _static/        # Ressources visuelles
-└── README.md       # Présentation du projet
+├── files/                 # Fichiers liés à la simulation RoboDK
+│   ├── simulation.rdk     # Projet RoboDK complet
+│   └── simulated_data/    # CSV simulés exportés depuis RoboDK
+├── models/                # Modèles entraînés (ex: LSTM, Isolation Forest)
+├── app/                   # Interface utilisateur (Streamlit ou autre)
+├── notebooks/             # Jupyter notebooks (analyse, collecte données, visualisation)
+│   └── data_collection.ipynb
+└── README.md              # Présentation globale du projet
 ```
 
 ---
