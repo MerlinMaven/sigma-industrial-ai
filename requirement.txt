@@ -1,5 +1,7 @@
-numpy>=1.23
-pandas>=2.0
+numpy>=1.26.4
+pandas>=2.2.3
+robodk>=5.9.0
+Python>=3.9.21
 jupyter
-robodk>=5.4
+
 
