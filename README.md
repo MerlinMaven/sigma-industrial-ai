@@ -47,11 +47,6 @@ En combinant **Deep Learning**, **séries temporelles** et **détection d’anom
 
 ---
 
-## 🖼️ Interface de Surveillance
-
-![Streamlit Sigma Interface](_static/pipeline.svg)
-
----
 
 ## 📂 Arborescence du projet
 
