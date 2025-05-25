@@ -41,7 +41,7 @@ The pipeline translates these objectives into five main phases:
 #. **Deployment and Interface**  
    - Integrate the full system into a **Streamlit dashboard** for real-time interaction, threshold tuning, and automatic report generation  
 
-.. image:: documentation/build/html/_static/pipeline.svg
+.. image:: _static/pipeline.svg
    :width: 100%
    :align: center
    :alt: Sigma Streamlit Pipeline
