@@ -11,8 +11,7 @@ System Architecture
 The Sigma-RUL system comprises the following components:
 
 1. **First Encoder**: Encodes raw sensor signals into compressed latent representations termed "signatures."
-2. **Isolation Forest**: Applied to the bottleneck representations of the first autoencoder to detect anomalies in real-time.
-3. **Second Dual-Head Autoencoder**:
+2. **Second Dual-Head Autoencoder**:
 
    - **Decoder 1 – Reconstructed Series**: Reconstructs the learned signatures to verify data integrity.
    - **Decoder 2 – Forecasted Series**: Predicts the future behavior of the signatures for early degradation detection.
