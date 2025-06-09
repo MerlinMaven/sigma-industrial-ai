@@ -2,16 +2,6 @@
 Introduction to Project Sigma: Intelligent Monitoring of Robotic Systems
 =======================================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   introduction
-   architecture
-   methodology
-   results
-   deployment
-
 Sigma is an advanced predictive maintenance system designed to ensure the reliability of automated industrial processes. Leveraging cutting-edge artificial intelligence techniques, Sigma learns the normal behavior of robotic systems in order to detect faults and degradation well before they become critical.
 
 Context and Vision
@@ -39,34 +29,36 @@ Sigma is designed to meet the following key goals:
 Pipeline Architecture
 =====================
 
-Our pipeline transforms raw data into actionable insights through the following structured stages:
+Our pipeline is designed to transform raw sensor data into actionable health insights through **six structured stages**, as illustrated below.
 
 .. image:: _static/pipeline.svg
    :width: 100%
    :align: center
    :alt: Sigma Pipeline Architecture
 
-**1. Data Ingestion and Simulation**:
+The end-to-end process consists of:
 
-- Time-series data (positions, speeds, accelerations) is generated and collected through RoboDK simulation to ensure realistic and controlled datasets.
+1. **Data Ingestion & Simulation**  
+   Realistic time-series data is generated using **RoboDK simulations** and collected via its API. The raw data is stored in CSV or Parquet format, ensuring high-fidelity and reproducibility.
 
-**2. Preprocessing and Windowing**:
+2. **Preprocessing & Sequencing**  
+   The signals are normalized and smoothed to remove irrelevant noise. Then, using a sliding window approach, they are segmented into fixed-length temporal sequences for modeling.
 
-- Signals are normalized and smoothed to remove irrelevant noise. A sliding window technique is applied to create temporal sequences.
+3. **Signature Extraction (Encoder)**  
+   A pre-trained **LSTM Autoencoder** acts as a feature extractor, compressing each temporal sequence into a compact and expressive **8-dimensional behavioral signature**. This forms the foundation of our transfer learning strategy.
 
-**3. Signature Extraction (Transfer Learning)**:
+4. **Anomaly Analysis (Core Model)**  
+   A **dual-head CNN-BiLSTM model** processes the extracted signatures to both **reconstruct** the input and **predict** its next state. This dual-task approach provides a comprehensive view of system behavior.
 
-- A pre-trained LSTM encoder is used as a feature extractor. It compresses each high-dimensional sequence into a compact 8D signature that captures its temporal dynamics — the core of our transfer learning strategy.
+5. **Anomaly Scoring**  
+   An anomaly score is computed by combining the reconstruction error and prediction error. This score serves as a robust and sensitive health indicator of the system’s condition.
 
-**4. Modeling and Anomaly Analysis**:
+6. **Deployment & Visualization**  
+   The entire pipeline is deployed through an interactive **Streamlit dashboard**, enabling real-time monitoring, dynamic anomaly thresholding, and automated diagnostics and reporting.
 
-- A dual-head CNN+BiLSTM processor is trained on these signatures to simultaneously reconstruct and predict the system behavior one step ahead.
+.. note::
 
-- An anomaly score is computed by combining the reconstruction and prediction errors, providing a robust health metric.
-
-**5. Deployment and Visualization**:
-
-- The entire system is integrated into a Streamlit dashboard, providing a user-friendly interface for real-time monitoring, alert analysis, and threshold tuning.
+   Detailed explanations of the model architectures, comparative benchmarks (e.g., against Isolation Forest), and our hyperparameter optimization strategy are provided in the **Methodology and Models** section.
 
 .. note::
 

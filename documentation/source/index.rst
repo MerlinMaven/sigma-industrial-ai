@@ -1,12 +1,21 @@
-
-Sigma documentation 
-========================================
+======================================
+Welcome to Sigma's Documentation!
+======================================
 .. toctree::
    :maxdepth: 4
-   :caption: Table des matières
+   :caption: Contents:
 
-   Introduction
-   team
-   data
-   model
-   deploiment
+   Introduction <Introduction>
+   Team <team>
+   Data Collection and Simulation <data>
+   Architecture <architecture>
+   Methodology and Models <methodology>
+   Results Analysis <results>
+   Deployment and Dashboard <deployment>
+   
+
+.. contents::
+   :local:
+   :depth: 2
+
+  
