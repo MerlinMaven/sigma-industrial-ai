@@ -31,38 +31,36 @@ To select the optimal models, we benchmarked a wide range of autoencoder archite
 - **Processor Model Selection**:
   For the core processor, we implemented and compared several dual-head models. The **CNN-BiLSTM** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
 
-3. Validating the Signature-Based Approach
--------------------------------------------
-A key hypothesis was that a learned signature space is superior to raw data for anomaly detection. We validated this by training classical algorithms (Isolation Forest, One-Class SVM) on both data types.
-
-.. figure:: /_static/raw_vs_signatures_violin_plot.png
-   :align: center
-   :width: 700px
-   :alt: Anomaly Score Distribution: Raw Data vs. Signatures
-
-The results were conclusive: models trained on signatures showed a **significant performance uplift of 10-15%** in their ability to discriminate anomalies, as seen by the tighter and more focused score distributions. This validates our core strategy.
-
-4. Hyperparameter Optimization with Optuna (Avant vs. Après)
------------------------------------------------------------
-To maximize the performance of our selected `CNN-BiLSTM` architecture, we conducted an extensive hyperparameter search using **Optuna**.
+3. Hyperparameter Optimization with Optuna
+------------------------------------------
+To maximize the performance of our selected `CNN-BiLSTM` processor, we conducted an extensive hyperparameter search using **Optuna**.
 
 .. figure:: /_static/optuna_optimization_history.png
    :align: center
    :width: 500px
    :alt: Optuna Optimization History
 
-The 50-trial optimization successfully converged towards a better set of parameters, **reducing the final prediction loss by over 30%** compared to our initial baseline configuration. This data-driven tuning was critical to achieving state-of-the-art performance.
+The 50-trial optimization successfully converged towards a superior set of parameters, **reducing the final prediction loss by over 30%** compared to our initial baseline configuration. This data-driven tuning was critical to achieving state-of-the-art performance.
 
-*The full code and results for these experiments are available in our `Jupyter Notebooks on GitHub <lien_vers_le_dossier_notebooks>`_.*
+4. Final Validation & Benchmarking
+------------------------------------
+With our optimized model finalized, we conducted a final validation to prove two key points:
+a) The superiority of operating on learned signatures over raw data.
+b) The state-of-the-art performance of our final model compared to industry-standard algorithms.
+
+To do this, we compared three types of models:
+- Classical algorithms (Isolation Forest, One-Class SVM) on **raw, high-dimensional data**.
+- The same classical algorithms on our **learned, low-dimensional signatures**.
+- Our final, optimized **CNN-BiLSTM AE** on the signatures.
+
+.. figure:: /_static/final_benchmark_violin_plot.png
+   :align: center
+   :width: 800px
+   :alt: Anomaly Score Distribution Benchmark: Raw Data vs. Signatures vs. Final Model
+
+The results are unequivocal. Firstly, models trained on signatures showed a **significant performance uplift of 10-15%** over those trained on raw data, validating our core hypothesis. Secondly, our final **CNN-BiLSTM AE** provides the sharpest and most reliable separation between normal and anomalous behavior, confirming its superior performance for this task.
 
 .. note::
    The detailed layer-by-layer architecture of the final models is provided in the :doc:`Model Implementation Details Appendix <appendix/model_details>`. The full code for all experiments is available in our `Jupyter Notebooks on GitHub <lien_vers_notebook>`.
 
-5. Final Benchmarking Against Classical Methods
-------------------------------------------------
-To provide a final, definitive benchmark, we compared the anomaly detection scores from our complete, optimized pipeline against those from Isolation Forest and One-Class SVM (operating on the superior signature space).
-
-*(Insérez ici le Violin Plot final qui inclut votre modèle CNN-BiLSTM-AE)*
-
-The score distribution clearly shows that our **CNN-BiLSTM AE** provides the sharpest and most reliable separation between normal and anomalous behavior, confirming its state-of-the-art performance for this task. The final quantitative results are presented in the **Results Analysis** section.
-
+The complete quantitative and qualitative performance analysis of this final pipeline is presented in the next section, **Results Analysis**.
