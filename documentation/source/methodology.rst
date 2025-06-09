@@ -16,32 +16,6 @@ This initial phase focused on understanding the raw data's characteristics to in
 
 2. Comparative Benchmarking of Autoencoder Architectures
 ---------------------------------------------------------
-We benchmarked a wide range of autoencoder architectures to select the optimal model for both the initial **Signature Extractor** and the final **Processor Model**.
-
-- **Feature Extractor Selection**: We evaluated architectures ranging from simple dense autoencoders to more complex convolutional (CAE) and recurrent (LSTM, BiLSTM) models. The **LSTM Autoencoder** was ultimately selected for its superior ability to capture temporal dynamics within a compact, expressive signature.
-- **Processor Model Selection**: For the core analysis engine, we implemented and compared several dual-output models. The goal was to find an architecture that excelled at both reconstructing the current signature and predicting the next. The **CNN-BiLSTM** model demonstrated the best overall performance on these dual tasks.
-
-3. Validating the Signature-Based Approach
--------------------------------------------
-A key hypothesis of this project is that anomaly detection is more effective in a learned latent space. To validate this, we trained classical algorithms (Isolation Forest, One-Class SVM) on both raw data and on our learned signatures. The results confirmed a **significant performance uplift (+10-15%)** when using signatures, thereby proving the value of our representation learning strategy.
-
-4. Hyperparameter Optimization with Optuna
-------------------------------------------
-To maximize the performance of our selected `CNN-BiLSTM` architecture, we conducted an extensive hyperparameter search using **Optuna**. We optimized key parameters such as the number of filters, LSTM units, dropout rates, and learning rate over 50 trials. This data-driven process led to the discovery of the optimal configuration used in our final model.
-
-*A detailed analysis of the optimization process, including importance plots, can be found in our experimentation notebooks.*
-
-5. Final Pipeline Evaluation
-----------------------------
-The performance of our final, optimized pipeline was rigorously benchmarked. This included qualitative analysis through the visualization of reconstructed and predicted outputs, as well as quantitative comparison against industry-standard methods. The complete findings are presented in the **Results Analysis** section.
-
-
-
-
-
-
-2. Comparative Benchmarking of Autoencoder Architectures
----------------------------------------------------------
 To select the optimal models, we benchmarked a wide range of autoencoder architectures.
 
 - **Feature Extractor Selection**:
@@ -57,6 +31,9 @@ To select the optimal models, we benchmarked a wide range of autoencoder archite
 - **Processor Model Selection**:
   For the core processor, we implemented and compared several dual-head models. The **CNN-BiLSTM** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
 
+.. note::
+   A detailed comparison of all tested architectures, including performance metrics (MSE, MAE, Inference Time), is available in the :doc:`Model Benchmarking Appendix <appendix/benchmarking>`. The full experiment can be run from our `Jupyter Notebook on GitHub <lien_vers_notebook>`.
+   
 3. Validating the Signature-Based Approach
 -------------------------------------------
 A key hypothesis was that a learned signature space is superior to raw data for anomaly detection. We validated this by training classical algorithms (Isolation Forest, One-Class SVM) on both data types.

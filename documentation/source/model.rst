@@ -32,6 +32,9 @@ The system is composed of two primary, cascaded models, as illustrated in the di
     *   **Reconstruction Head**: Attempts to reconstruct the input signature. A high **Reconstruction Error** signals that the current system state is inconsistent or statistically unlikely.
     *   **Prediction Head**: Attempts to predict the signature of the *next* time step. A high **Prediction Error** indicates that the system's behavior is deviating from its expected dynamic trajectory.
 
+.. note::
+   The detailed layer-by-layer architecture of the final model is provided in the :doc:`Model Implementation Details Appendix <appendix/model_details>`.
+
 **Final Anomaly Score**
 
 The final anomaly score is a weighted combination of the Reconstruction Error and the Prediction Error. This creates a highly robust metric that is sensitive to both static anomalies (unusual states) and dynamic anomalies (unexpected behavior).
