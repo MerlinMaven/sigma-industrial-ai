@@ -1,159 +1,129 @@
-Industrial Process Simulation
-=============================
+============================================
+Data Source: Industrial Process Simulation
+============================================
+
+.. sidebar:: **Source & Reproducibility**
+
+   The core of this project relies on a **controlled and reproducible simulation** of an industrial process, modeled in the professional robotics environment, **RoboDK**.
+   
+   The original simulation project is publicly available and can be explored here:
+   
+   🔗 **Official RoboDK Project**: `Mixed Applications with UR10e <https://robodk.com/example/Mixed-Applications-with-UR10e>`_
 
 Overview
 --------
 
-The data used in this project is **generated from a simulated industrial process** modeled in **RoboDK**, a professional software for offline programming and simulation of industrial robots. This simulation serves as a digital twin of a real-world packaging and palletizing process, allowing data collection in a controlled and replicable environment.
+The entire dataset for this project is generated from a **digital twin** of a real-world packaging and palletizing cell. Using a simulation ensures access to high-fidelity, perfectly labeled "normal" operation data, free from the noise and inconsistencies often found in real-world sensor feeds. This provides an ideal baseline for training robust anomaly detection models.
 
-.. note:: 
-    The original simulation is publicly available on the official RoboDK website:
-      
-    **🔗 Official RoboDK Project**: https://robodk.com/example/Mixed-Applications-with-UR10e
+RoboDK allows for the creation of complex robotic cells and the extraction of precise operational data—such as positions, velocities, and accelerations—which are essential for developing predictive maintenance and system health monitoring solutions.
 
-RoboDK enables the creation of complete robotic cells, simulates realistic industrial workflows, and allows extraction of operational data such as positions, speeds, and accelerations — essential for machine learning tasks like predictive maintenance or anomaly detection.
-
-Simulation Description
+Simulation Environment
 ----------------------
 
-The simulated process represents an automated **depalletizing, boxing (bottle filling), and palletizing** system for bottles. It includes three main stages:
+The simulated process automates a **depalletizing, bottle filling, and palletizing** workflow.
 
-1. **Depalletizing**: A robot picks empty boxes from a pallet and places them on a conveyor.
-2. **Boxing**: A second robot fills each box with several bottles delivered by a separate conveyor.
-3. **Palletizing**: A third robot, mounted on a vertical linear rail, stacks the filled boxes onto a new pallet.
+1.  **Depalletizing**: A UR10e robot arm picks empty boxes and places them onto a conveyor belt.
+2.  **Filling**: A second UR10e fills each box with bottles delivered by another conveyor.
+3.  **Palletizing**: A third UR10e, mounted on a linear rail, stacks the filled boxes onto a new pallet.
 
-Cell Components
----------------
-
-UR10e Robots
-^^^^^^^^^^^^
-
-Three **UR10e** robotic arms are used in the simulation:
-
-- **Robot 1**: Handles the depalletizing of empty boxes.
-- **Robot 2**: Performs the boxing by placing bottles into the boxes.
-- **Robot 3**: Mounted on a vertical rail to palletize the full boxes.
-
-The **UR10e** is a 6-axis collaborative robot with a 1300 mm reach and a 10 kg payload, well-suited for packaging and handling tasks.
-
-.. image:: /_static/images/ur10e.png
-   :align: center
-   :width: 400px
-   :alt: UR10e robot arm
-
-Conveyors
-^^^^^^^^^
-
-Two conveyors support the material flow within the cell:
-
-- **Conveyor_Box**: Transports empty or filled boxes.
-- **Conveyor_Bottle**: Delivers bottles to the boxing robot.
-
-.. image:: /_static/images/belt.png
-   :align: center
-   :width: 400px
-   :alt: Conveyor system
-
-Vertical Linear Rail
-^^^^^^^^^^^^^^^^^^^^
-
-The third robot is mounted on a **vertical linear rail** to reach various pallet layers during the stacking operation.
-
-.. image:: /_static/images/rail.png
-   :align: center
-   :width: 400px
-   :alt: Vertical rail system
-
-Simulation Video
-----------------
+**Simulation Video:**
 
 .. raw:: html
 
-   <video controls width="700" height="300">
+   <div style="text-align: center;">
+   <video controls width="100%" style="max-width: 700px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
        <source src="_static/simulation_video.mp4" type="video/mp4">
        Your browser does not support the video tag.
    </video>
+   </div>
 
-Data Collection
----------------
+Key Components
+--------------
 
-Throughout the simulation, the following data is collected for each component (robots, conveyors, rail):
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
 
-- **Cartesian positions** (X, Y, Z) 
-- **Joint velocities & accelerations** (for robots)  
-- **Linear speeds & accelerations** (for conveyors & rail)  
-- **Timestamps**
+   * - Component
+     - Description
+   * - **UR10e Robots (x3)**
+     - 6-axis collaborative arms handling depalletizing, filling, and palletizing tasks. Known for their precision and flexibility in packaging applications.
+   * - **Conveyors (x2)**
+     - Transport boxes and bottles, ensuring a continuous material flow throughout the cell.
+   * - **Vertical Linear Rail**
+     - Provides the palletizing robot with extended vertical reach, enabling the stacking of multiple pallet layers.
 
-The data is recorded in **real-time** and saved in **CSV format**, capturing the full operational cycle. This dataset consists only of **normal operation data**, representing the system’s standard behavior without faults or disruptions. This choice ensures the generation of a baseline for anomaly detection, where the machine learning models will learn the expected behavior and flag deviations that could indicate potential issues.
+Data Collection & Characteristics
+---------------------------------
 
+Real-time operational data is recorded for each component and saved in **CSV format**. This dataset exclusively captures **normal operating behavior**, establishing a clean baseline for our anomaly detection models. The primary collected features include:
 
-Example Time‑Series Plots
-~~~~~~~~~~~~~~~~~~~~~~~~~
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
 
-Below are representative samples illustrating the kind of data captured:
+   * - Data Point
+     - Description
+   * - **Cartesian Positions**
+     - X, Y, Z coordinates for all moving parts.
+   * - **Joint Velocities & Accelerations**
+     - Kinematic data for each of the 6 robot axes.
+   * - **Linear Speeds & Accelerations**
+     - Movement data for conveyors and the linear rail.
+   * - **Timestamps**
+     - High-resolution timestamps to ensure temporal consistency.
+
+**Example Time‑Series Plots:**
 
 .. figure:: /_static/rail_data.png
    :align: center
    :width: 600px
-   :alt: Robot Joint Position Over Time
-
-   **Figure:** Example time series from the **vertical rail** showing position (mm), speed (mm/s) and acceleration (mm/s²) over the full collection cycle.
+   
+   Time-series from the **vertical rail** showing its core operational metrics.
 
 .. figure:: /_static/belt_data.png
    :align: center
    :width: 600px
-   :alt: Conveyor Speed Over Time
 
-   **Figure:** Example time series of **conveyor speed** (mm/s) as boxes traverse the belt.
+   Time-series of **conveyor speed** as boxes are transported.
 
+Getting Started: Reproducing the Data
+-------------------------------------
 
-Getting Started
-----------------
+This section provides a step-by-step guide to run the simulation and generate the dataset yourself.
 
-This section guides you through setting up the environment, running the simulation in **RoboDK**, and collecting data using the provided **Jupyter Notebook**.
+**Prerequisites:**
 
-Prerequisites
--------------
+*   ✅ **RoboDK**: [Download here](https://robodk.com/download)
+*   ✅ **Python 3.8+** with the libraries listed in `requirements.txt`.
 
-- ✅ **RoboDK** installed on your machine  
-  ➤ Download: https://robodk.com/download  
-- ✅ **Python 3.8+** with `jupyter`, `robodk`, `numpy`, `pandas` (all libraries used are already listed in the repository)
+**Local Workflow:**
 
-📦 **All required files (simulation, notebook) are included in this GitHub repository** — no extra downloads needed.
+1.  **Clone the Repository:**
+    
+    .. code-block:: bash
 
-Local Workflow
---------------
+       git clone https://github.com/MerlinMaven/sigma-industrial-ai.git
+       cd sigma-industrial-ai
 
-Follow these steps to run the simulation and collect data:
+2.  **Install Dependencies:**
 
-1. **Clone or download** this repository to your local machine:  
-   🔗 `sigma-industrial-ai <https://github.com/MerlinMaven/sigma-industrial-ai.git>`_
+    .. code-block:: bash
 
-2. Open **RoboDK**. Then, in the cloned repository, open the simulation file: ``files/simulation.rdk`` 
+       pip install -r requirements.txt
 
+3.  **Run the Simulation:**
+    Open the simulation file ``simulations/simulation.rdk`` in the RoboDK application.
 
-3. Launch **Jupyter Notebook** or **JupyterLab**, and open the file: ``notebooks/data_collection.ipynb``
+4.  **Execute the Collection Notebook:**
+    Launch Jupyter and run all cells in ``notebooks/data_collection.ipynb`` to connect to the RoboDK API and generate the CSV data files.
 
-4. Run all cells to connect via the `robodk` API and generate the CSV files.
+.. tip:: **A Note on Colab and Local Runtimes**
+
+   Google Colab runs in the cloud and **cannot directly connect** to a RoboDK instance running on your local machine. To generate data, you must run the Jupyter Notebook **on the same computer where RoboDK is installed**. This allows the notebook to communicate with the RoboDK API via its local server.
 
 .. raw:: html
 
+   <br>
    <a href="https://colab.research.google.com/github/MerlinMaven/sigma-industrial-ai/blob/main/notebooks/data_collection.ipynb" target="_blank"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-
-.. note::
-
-   **Data Collection Environment**  
-   While Google Colab provides a convenient cloud-based Jupyter interface, it **cannot directly connect** to a locally running RoboDK instance because Colab’s execution environment is isolated from your machine’s localhost network. 
-
-   To collect data in real time from RoboDK, you have two practical options:
-
-   1. **Local Jupyter Notebook**  
-      Run your Python data‑collection script in a standard Jupyter Notebook or JupyterLab on the same PC where RoboDK is installed. This local setup can connect out‑of‑the‑box to the RoboDK API (`robodk`) over TCP/IP. 
-
-   2. **Colab with a Local Runtime**  
-      If you still wish to use Colab’s interface, you can expose a local Jupyter server to Colab using the `jupyter_http_over_ws` extension. This lets Colab act as a front‑end while all code runs on your local machine, granting access to RoboDK’s API. 
-
-   Without one of these configurations, any attempt to collect RoboDK data directly in a standard Colab notebook will fail due to network restrictions between Colab’s cloud servers and your local host.
-
-
-
+   <br>
