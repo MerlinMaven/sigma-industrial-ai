@@ -24,17 +24,17 @@ Core Development Team
 
 
 .. |linkedin_tawfik| image::_static\link.jpg
-   :width: 24
+   :width: 40
    :target: https://www.linkedin.com/in/tawfik-masrour-43163b85/
    :alt: LinkedIn Profile
 
-.. |linkedin_amine| image:: _static/link.jpg
-   :width: 24
+.. |linkedin_amine| image::_static\link.jpg
+   :width: 40
    :target: https://ma.linkedin.com/in/amine-essahraoui
    :alt: LinkedIn Profile
 
 .. |linkedin_wiam| image:: _static/link.jpg
-   :width: 24
+   :width:  40
    :target: https://ma.linkedin.com/in/wiam-serraji-71478122b
    :alt: LinkedIn Profile
 
