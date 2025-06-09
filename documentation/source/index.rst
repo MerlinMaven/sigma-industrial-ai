@@ -7,7 +7,7 @@ Welcome to Sigma's Documentation!
    :caption: Getting Started
 
    Quick Start Guide <quickstart>
-   Introduction <introduction>
+   Introduction <Introduction>
 
 .. toctree::
    :maxdepth: 2

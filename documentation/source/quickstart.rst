@@ -1,100 +1,82 @@
 ===========================
-Quick Start Guide
+Quick Start Guide: Reproducing the Final Analysis
 ===========================
 
-This guide provides a step-by-step walkthrough to set up the environment, run the analysis pipeline, and reproduce the key results of the Sigma project on your local machine.
+This guide provides a step-by-step walkthrough to set up the environment, run the main analysis notebook, and reproduce the key results and visualizations of the Sigma project.
+
+The goal is to execute the pre-trained models on the provided data, not to retrain them from scratch.
 
 Prerequisites
 -------------
 
-Before you begin, ensure you have the following software installed:
-
 *   **Git**: For cloning the project repository.
-*   **Python 3.8+**: The core programming language.
-*   **Conda or venv**: Recommended for creating an isolated Python environment.
-*   **(Optional) RoboDK**: Only required if you wish to generate new data from the simulation files. The project already includes pre-generated data.
+*   **Python 3.8+**
+*   **Jupyter Notebook or JupyterLab**: For running the analysis notebook.
+*   **Conda or venv**: Recommended for managing dependencies.
 
 Step 1: Clone the Project Repository
 ------------------------------------
-Open your terminal or command prompt and clone the project from GitHub:
+Open your terminal and clone the project from GitHub:
 
 .. code-block:: bash
 
    git clone https://github.com/MerlinMaven/sigma-industrial-ai.git
    cd sigma-industrial-ai
 
-Step 2: Set Up the Python Environment
--------------------------------------
-It is highly recommended to create a dedicated environment to avoid package conflicts.
+Step 2: Set Up the Python Environment & Dependencies
+----------------------------------------------------
+Create a dedicated environment and install all required packages from the `requirements.txt` file.
 
 **Using Conda:**
 
 .. code-block:: bash
 
-   conda create -n sigma_env python=3.9
+   conda create -n sigma_env python=3.9 -y
    conda activate sigma_env
-
-**Using venv:**
-
-.. code-block:: bash
-   
-   python -m venv sigma_env
-   source sigma_env/bin/activate  # On Windows, use: sigma_env\Scripts\activate
-
-Step 3: Install Dependencies
-----------------------------
-All required Python libraries are listed in the `requirements.txt` file. Install them using pip:
-
-.. code-block:: bash
-
    pip install -r requirements.txt
 
 .. note::
-   This installation includes `tensorflow`, `pandas`, `scikit-learn`, `seaborn`, and all other necessary packages. If you have a compatible NVIDIA GPU, the GPU-enabled version of TensorFlow will be used automatically.
+   This step installs all necessary libraries, including `tensorflow`, `pandas`, `scikit-learn`, and `jupyterlab`.
 
-Step 4: Verify Project Structure and Models
--------------------------------------------
-Ensure that the pre-trained models are present in the repository. After cloning, you should have the following structure:
-
-.. code-block:: text
-
-   sigma-industrial-ai/
-   ├── models/
-   │   ├── saved_models/
-   │   │   └── LSTM_AE_bottleneck_8.h5
-   │   └── saved_dual_output_models/
-   │       └── .../CNN_BILSTM_AE_complete.h5
-   ├── data/
-   │   └── .../Linear_Rail_rail_data.csv
-   └── src/
-       └── analysis_pipeline.py  (or your main script)
-
-If the models are missing, you may need to download them from a release page or retrain them using the provided notebooks.
-
-Step 5: Run the Main Analysis Pipeline
----------------------------------------
-The core logic of the project is encapsulated in a single script. Execute it from the root of the project directory:
+Step 3: Launch Jupyter and Open the Analysis Notebook
+------------------------------------------------------
+Once the environment is set up, launch JupyterLab:
 
 .. code-block:: bash
 
-   python src/analysis_pipeline.py
+   jupyter lab
 
-This script will perform the entire end-to-end process:
-1.  Load the pre-generated data.
-2.  Load the pre-trained models.
-3.  Run the anomaly detection benchmark ("Raw vs. Signatures").
-4.  Generate and display the final analysis plots and metrics.
-5.  Save a log file (`anomaly_detection_pipeline.log`) with the execution details.
+Navigate to the `notebooks/` directory and open the main analysis file. Let's assume it is named:
+``Linear_Rail.ipynb``
+
+Step 4: Run All Cells to Reproduce the Results
+------------------------------------------------
+The notebook is designed to be executed from top to bottom. It contains all the necessary steps, pre-configured with the correct file paths for the data and pre-trained models.
+
+**To reproduce the analysis, simply click on the menu `Run -> Run All Cells`.**
+
+This action will:
+
+1.  Load the pre-generated time-series data.
+2.  Load the pre-trained **Signature Extractor** (`LSTM_AE`) and the **Processor Model** (`CNN_BILSTM_AE`).
+3.  Execute the full analysis pipeline, including the benchmark against classical methods.
+4.  Generate and display all the final plots and quantitative reports directly within the notebook.
 
 Expected Outcome
 ----------------
 
-Upon successful execution, you should see the final analysis plots (the violin plot comparing anomaly scores) displayed on your screen, and a quantitative report printed in your console. This will confirm that you have successfully reproduced the main results of the project.
+Upon successful execution of all cells, you will see the complete project report generated within the notebook. This includes:
 
-Next Steps
-----------
-With the environment set up, you can now explore the project in more detail:
+*   The violin plot comparing anomaly scores ("Raw vs. Signatures").
+*   The detailed performance metrics (RMSE/MAE).
+*   The final conclusions.
 
--   To understand the **project's goals and architecture**, please refer to the :doc:`Introduction` and :doc:`Architecture` sections.
--   To delve into the **experimental process and model selection**, see the :doc:`Methodology and Models` page.
--   To **generate new data using RoboDK**, open the `simulations/simulation.rdk` file and run the `notebooks/data_collection.ipynb` notebook.
+This confirms that you have successfully reproduced the key findings of the project using the provided models and data.
+
+Exploring Further
+-----------------
+With the notebook open, you are now in the project's "cockpit". You can:
+
+*   Inspect the code in each cell to understand the implementation details.
+*   Modify parameters and re-run individual cells to conduct your own experiments.
+*   Explore the other notebooks in the directory, such as `data_collection.ipynb`, which contains the code used to generate the original data from RoboDK.
