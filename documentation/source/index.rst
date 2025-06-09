@@ -1,17 +1,26 @@
 ======================================
 Welcome to Sigma's Documentation!
 ======================================
-.. toctree::
-   :maxdepth: 30
-   :caption: Contents:
 
-   Introduction <Introduction>
-   Team <team>
-   Data Collection and Simulation <data>
-   Architecture <model>
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
+   Quick Start Guide <quickstart>
+   Introduction <introduction>
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Project Details
+
+   Architecture <architecture>
    Methodology and Models <methodology>
    Results Analysis <results>
-   Deployment and Dashboard <deploiment>
+   Deployment and Dashboard <deployment>
 
+.. toctree::
+   :maxdepth: 2
+   :caption: About the Project
 
-  
+   Team and Credits <team>
+   GitHub Repository <https://github.com/MerlinMaven/sigma-industrial-ai.git>

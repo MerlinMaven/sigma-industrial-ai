@@ -61,6 +61,9 @@ To do this, we compared three types of models:
 The results are unequivocal. Firstly, models trained on signatures showed a **significant performance uplift of 10-15%** over those trained on raw data, validating our core hypothesis. Secondly, our final **CNN-BiLSTM AE** provides the sharpest and most reliable separation between normal and anomalous behavior, confirming its superior performance for this task.
 
 .. note::
-   The detailed layer-by-layer architecture of the final models is provided in the :doc:`Model Implementation Details Appendix <appendix/model_details>`. The full code for all experiments is available in our `Jupyter Notebooks on GitHub <lien_vers_notebook>`.
+
+   The detailed, layer-by-layer architecture of the final, optimized models is provided in the :doc:`Model Implementation Details Appendix <appendix/model_details>`. 
+   
+   Furthermore, the full code for all experiments described above—from benchmarking to optimization—is available in our `Jupyter Notebooks on GitHub <lien_vers_notebook>`.
 
 The complete quantitative and qualitative performance analysis of this final pipeline is presented in the next section, **Results Analysis**.
