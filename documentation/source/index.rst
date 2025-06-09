@@ -8,10 +8,10 @@ Welcome to Sigma's Documentation!
    Introduction <Introduction>
    Team <team>
    Data Collection and Simulation <data>
-   Architecture <architecture>
+   Architecture <model>
    Methodology and Models <methodology>
    Results Analysis <results>
-   Deployment and Dashboard <deployment>
+   Deployment and Dashboard <deploimentt>
    
 
 .. contents::

@@ -23,17 +23,21 @@ Core Development Team
    |linkedin_wiam|
 
 
-.. |linkedin_tawfik| image:: _static/linkedin_icon.png
+.. |linkedin_tawfik| image:: _static/link.jpg
    :width: 24
    :target: https://www.linkedin.com/in/tawfik-masrour-43163b85/
    :alt: LinkedIn Profile
 
-.. |linkedin_amine| image:: _static/linkedin_icon.png
+.. |linkedin_amine| image:: _static/link.jpg
    :width: 24
    :target: https://ma.linkedin.com/in/amine-essahraoui
    :alt: LinkedIn Profile
 
-.. |linkedin_wiam| image:: _static/linkedin_icon.png
+.. |linkedin_wiam| image:: _static/link.jpg
    :width: 24
    :target: https://ma.linkedin.com/in/wiam-serraji-71478122b
    :alt: LinkedIn Profile
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
