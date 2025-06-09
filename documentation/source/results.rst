@@ -24,19 +24,19 @@ As observed, the model demonstrates high fidelity in both tasks. The reconstruct
 
 To quantify this performance, we calculated the Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) for both tasks on the test dataset.
 
-*(Insérez ici votre rapport textuel formaté pour le Rail Linéaire)*
-::
-
-   ============================================================
-   📊 PERFORMANCE REPORT: VERTICAL LINEAR RAIL
-   ============================================================
-   Feature           | Tâche              | MAE            | RMSE
-   ------------------------------------------------------------
-   rail_position     | Reconstruction     | 10.1234        | 15.5966
-                     | Prédiction (t+1)   | 11.4567        | 17.1234
-   ------------------------------------------------------------
-   rail_speed        | Reconstruction     | ...            | ...
-   ...
+================================================================================
+📊 RAPPORT DE PERFORMANCE QUANTITATIF (sur données dénormalisées)
+================================================================================
+Feature              | Tâche              | MAE             | RMSE        
+--------------------------------------------------------------------------
+rail_position        | Reconstruction     | 10.0771         | 15.5968     
+                     | Prédiction (t+1)   | 13.7775         | 25.2882     
+--------------------------------------------------------------------------
+rail_speed           | Reconstruction     | 73.3913         | 132.0795    
+                     | Prédiction (t+1)   | 87.5624         | 164.0219    
+--------------------------------------------------------------------------
+rail_acceleration    | Reconstruction     | 745.5022        | 1271.2927   
+                     | Prédiction (t+1)   | 814.0240        | 1365.6223   
 
 **Benchmarking against Classical Methods**
 
