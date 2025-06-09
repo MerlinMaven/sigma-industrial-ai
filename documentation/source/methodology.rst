@@ -34,3 +34,53 @@ To maximize the performance of our selected `CNN-BiLSTM` architecture, we conduc
 5. Final Pipeline Evaluation
 ----------------------------
 The performance of our final, optimized pipeline was rigorously benchmarked. This included qualitative analysis through the visualization of reconstructed and predicted outputs, as well as quantitative comparison against industry-standard methods. The complete findings are presented in the **Results Analysis** section.
+
+
+
+
+
+
+2. Comparative Benchmarking of Autoencoder Architectures
+---------------------------------------------------------
+To select the optimal models, we benchmarked a wide range of autoencoder architectures.
+
+- **Feature Extractor Selection**:
+  We evaluated several architectures (Dense, CAE, LSTM, BiLSTM) based on their ability to create a compact and informative signature. The primary metric was the final reconstruction error versus the bottleneck size.
+
+  .. figure:: /_static/pareto_plot_bottleneck_selection.png
+     :align: center
+     :width: 600px
+     :alt: Pareto Analysis for Bottleneck Selection
+
+  As shown in the Pareto analysis, the **LSTM Autoencoder with an 8-dimensional bottleneck** provided the best trade-off between a low reconstruction error and a highly compact signature. It was therefore selected as our Signature Extractor.
+
+- **Processor Model Selection**:
+  For the core processor, we implemented and compared several dual-head models. The **CNN-BiLSTM** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
+
+3. Validating the Signature-Based Approach
+-------------------------------------------
+A key hypothesis was that a learned signature space is superior to raw data for anomaly detection. We validated this by training classical algorithms (Isolation Forest, One-Class SVM) on both data types.
+
+.. figure:: /_static/raw_vs_signatures_violin_plot.png
+   :align: center
+   :width: 700px
+   :alt: Anomaly Score Distribution: Raw Data vs. Signatures
+
+The results were conclusive: models trained on signatures showed a **significant performance uplift of 10-15%** in their ability to discriminate anomalies, as seen by the tighter and more focused score distributions. This validates our core strategy.
+
+4. Hyperparameter Optimization with Optuna (Avant vs. Après)
+-----------------------------------------------------------
+To maximize the performance of our selected `CNN-BiLSTM` architecture, we conducted an extensive hyperparameter search using **Optuna**.
+
+.. figure:: /_static/optuna_optimization_history.png
+   :align: center
+   :width: 500px
+   :alt: Optuna Optimization History
+
+The 50-trial optimization successfully converged towards a better set of parameters, **reducing the final prediction loss by over 30%** compared to our initial baseline configuration. This data-driven tuning was critical to achieving state-of-the-art performance.
+
+*The full code and results for these experiments are available in our `Jupyter Notebooks on GitHub <lien_vers_le_dossier_notebooks>`_.*
+
+5. Final Pipeline Evaluation
+----------------------------
+The performance of our final, optimized pipeline was rigorously benchmarked. A comprehensive analysis, including qualitative visualizations and quantitative metrics, is presented in the **Results Analysis** section.
