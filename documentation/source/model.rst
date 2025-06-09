@@ -28,6 +28,7 @@ The system is composed of two primary, cascaded models, as illustrated in the di
 **Stage 2: The Processor Model**
 
 *   This is the core analysis engine, a **CNN-BiLSTM Autoencoder** optimized for performance. It takes the 8D signature from the Signature Extractor as input and performs two simultaneous tasks through its dual-head design:
+
     *   **Reconstruction Head**: Attempts to reconstruct the input signature. A high **Reconstruction Error** signals that the current system state is inconsistent or statistically unlikely.
     *   **Prediction Head**: Attempts to predict the signature of the *next* time step. A high **Prediction Error** indicates that the system's behavior is deviating from its expected dynamic trajectory.
 
