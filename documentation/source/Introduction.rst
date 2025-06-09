@@ -63,7 +63,8 @@ The end-to-end process consists of:
 .. note::
 
    The entire project — including source code, RoboDK simulations, pre-trained models, and experimentation notebooks — is available on our GitHub repository.
-   🔗 Check out the project on GitHub: `sigma-industrial-ai <https://github.com/MerlinMaven/sigma-industrial-ai.git>`_
+
+🔗 Check out the project on GitHub: `sigma-industrial-ai <https://github.com/MerlinMaven/sigma-industrial-ai.git>`_
 
 Project Structure
 =================

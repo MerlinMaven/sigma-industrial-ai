@@ -38,7 +38,3 @@ Core Development Team
    :width:  40
    :target: https://ma.linkedin.com/in/wiam-serraji-71478122b
    :alt: LinkedIn Profile
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:

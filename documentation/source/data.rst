@@ -1,37 +1,21 @@
-**============================================**
+============================================
 Data Source: Industrial Process Simulation
-**============================================**
+============================================
 
 .. sidebar:: **Source & Reproducibility**
-   
-   .. raw:: html
-   
-      <div style="text-align: justify; text-justify: inter-word; hyphens: auto;">
-   
+
    The core of this project relies on a **controlled and reproducible simulation** of an industrial process, modeled in the professional robotics environment, **RoboDK**.
    
    The original simulation project is publicly available and can be explored here:
    
    🔗 **Official RoboDK Project**: `Mixed Applications with UR10e <https://robodk.com/example/Mixed-Applications-with-UR10e>`_
-   
-   .. raw:: html
-   
-      </div>
 
 Overview
 --------
 
-.. raw:: html
-
-   <div style="text-align: justify; text-justify: inter-word; hyphens: auto; line-height: 1.6;">
-
 The entire dataset for this project is generated from a **digital twin** of a real-world packaging and palletizing cell. Using a simulation ensures access to high-fidelity, perfectly labeled "normal" operation data, free from the noise and inconsistencies often found in real-world sensor feeds. This provides an ideal baseline for training robust anomaly detection models.
 
 RoboDK allows for the creation of complex robotic cells and the extraction of precise operational data—such as positions, velocities, and accelerations—which are essential for developing predictive maintenance and system health monitoring solutions.
-
-.. raw:: html
-
-   </div>
 
 Simulation Environment
 ----------------------
