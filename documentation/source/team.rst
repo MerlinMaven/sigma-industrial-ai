@@ -23,12 +23,12 @@ Core Development Team
    |linkedin_wiam|
 
 
-.. |linkedin_tawfik| image::_static/link.jpg
+.. |linkedin_tawfik| image:: _static/link.jpg
    :width: 40
    :target: https://www.linkedin.com/in/tawfik-masrour-43163b85/
    :alt: LinkedIn Profile
 
-.. |linkedin_amine| image::_static\link.jpg
+.. |linkedin_amine| image:: _static/link.jpg
    :width: 40
    :height: 40
    :target: https://ma.linkedin.com/in/amine-essahraoui
