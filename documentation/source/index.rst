@@ -2,7 +2,7 @@
 Welcome to Sigma's Documentation!
 ======================================
 .. toctree::
-   :maxdepth: 20
+   :maxdepth: 30
    :caption: Contents:
 
    Introduction <Introduction>
