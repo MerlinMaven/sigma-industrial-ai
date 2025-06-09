@@ -2,7 +2,7 @@
 Welcome to Sigma's Documentation!
 ======================================
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 5
    :caption: Contents:
 
    Introduction <Introduction>
@@ -12,10 +12,6 @@ Welcome to Sigma's Documentation!
    Methodology and Models <methodology>
    Results Analysis <results>
    Deployment and Dashboard <deploimentt>
-   
 
-.. contents::
-   :local:
-   :depth: 2
 
   
