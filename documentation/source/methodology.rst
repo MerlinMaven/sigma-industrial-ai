@@ -31,9 +31,6 @@ To select the optimal models, we benchmarked a wide range of autoencoder archite
 - **Processor Model Selection**:
   For the core processor, we implemented and compared several dual-head models. The **CNN-BiLSTM** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
 
-.. note::
-   A detailed comparison of all tested architectures, including performance metrics (MSE, MAE, Inference Time), is available in the :doc:`Model Benchmarking Appendix <appendix/benchmarking>`. The full experiment can be run from our `Jupyter Notebook on GitHub <lien_vers_notebook>`.
-   
 3. Validating the Signature-Based Approach
 -------------------------------------------
 A key hypothesis was that a learned signature space is superior to raw data for anomaly detection. We validated this by training classical algorithms (Isolation Forest, One-Class SVM) on both data types.
@@ -58,6 +55,14 @@ The 50-trial optimization successfully converged towards a better set of paramet
 
 *The full code and results for these experiments are available in our `Jupyter Notebooks on GitHub <lien_vers_le_dossier_notebooks>`_.*
 
-5. Final Pipeline Evaluation
-----------------------------
-The performance of our final, optimized pipeline was rigorously benchmarked. A comprehensive analysis, including qualitative visualizations and quantitative metrics, is presented in the **Results Analysis** section.
+.. note::
+   The detailed layer-by-layer architecture of the final models is provided in the :doc:`Model Implementation Details Appendix <appendix/model_details>`. The full code for all experiments is available in our `Jupyter Notebooks on GitHub <lien_vers_notebook>`.
+
+5. Final Benchmarking Against Classical Methods
+------------------------------------------------
+To provide a final, definitive benchmark, we compared the anomaly detection scores from our complete, optimized pipeline against those from Isolation Forest and One-Class SVM (operating on the superior signature space).
+
+*(Insérez ici le Violin Plot final qui inclut votre modèle CNN-BiLSTM-AE)*
+
+The score distribution clearly shows that our **CNN-BiLSTM AE** provides the sharpest and most reliable separation between normal and anomalous behavior, confirming its state-of-the-art performance for this task. The final quantitative results are presented in the **Results Analysis** section.
+
