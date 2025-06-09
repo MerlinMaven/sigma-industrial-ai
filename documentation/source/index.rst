@@ -11,7 +11,7 @@ Welcome to Sigma's Documentation!
    Architecture <model>
    Methodology and Models <methodology>
    Results Analysis <results>
-   Deployment and Dashboard <deploimentt>
+   Deployment and Dashboard <deploiment>
 
 
   

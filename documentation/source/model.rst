@@ -1,154 +1,39 @@
-Model
-==========================================================================================
-
-Sigma is based on the premise that industrial systems exhibit characteristic normal behavioral patterns, referred to as "signatures." By learning these signatures, the model can detect deviations indicative of anomalies or degradation, enabling accurate estimation of the Remaining Useful Life (RUL).
-
-Given that the system operates in an environment where only normal (non-anomalous) data is available, we utilize unsupervised learning techniques. This is because the model is designed to learn the normal operating conditions without the need for labeled anomaly data. By learning the "signature" of normal behavior, the model can effectively identify any deviation from these learned patterns, which signals an anomaly or potential failure.
-
+==================================
 System Architecture
--------------------
+==================================
 
-The Sigma-RUL system comprises the following components:
+Project Sigma is built upon a sophisticated, two-stage architecture designed to first learn an efficient representation of system behavior and then use that representation for high-sensitivity anomaly detection.
 
-1. **First Encoder**: Encodes raw sensor signals into compressed latent representations termed "signatures."
-2. **Second Dual-Head Autoencoder**:
+Core Philosophy: From Raw Data to Behavioral Signatures
+---------------------------------------------------------
 
-   - **Decoder 1 – Reconstructed Series**: Reconstructs the learned signatures to verify data integrity.
-   - **Decoder 2 – Forecasted Series**: Predicts the future behavior of the signatures for early degradation detection.
+The foundational premise of Sigma is that raw, high-dimensional sensor data can be distilled into a compact, information-rich **behavioral signature**. This signature captures the underlying dynamics and health of the system more effectively than any individual sensor reading. Our entire system is designed to leverage this powerful, compressed representation.
 
-.. note::
-    
-    Sigma combines Autoencoders and Isolation Forest for multi-perspective anomaly detection. The Autoencoders detect gradual changes in temporal patterns, while Isolation Forest identifies abrupt outliers in the latent space. This hybrid approach enhances RUL estimation by reducing false positives/negatives and capturing anomalies across different degradation stages.
-
-
-
-.. figure:: /_static/model.png
-   :align: center
-   :width: 800px
-   :alt: Robot Joint Position Over Time
-
-
-
-Model Selection
----------------
-
-The following LSTM-based autoencoder architectures are implemented and available for use within the Sigma-RUL framework:
-
-+------------------+-------------------------------------------------------------+
-| Model            | Description                                                 |
-+==================+=============================================================+
-| Linear-AE        | Autoencoder with linear layers only                         | 
-+------------------+-------------------------------------------------------------+ 
-| LSTM-AE          | Autoencoder based on unidirectional LSTM cells              | 
-+------------------+-------------------------------------------------------------+
-| BiLSTM-AE        | Bidirectional LSTM to capture temporal dependencies         |
-+------------------+-------------------------------------------------------------+
-| CAE              | Convolutional Autoencoder for extracting local features     |
-+------------------+-------------------------------------------------------------+
-| ConvBiLSTM-AE    | Combination of CNN and BiLSTM for robust temporal modeling  | 
-+------------------+-------------------------------------------------------------+
-
-Benchmarking Methodology
+Architectural Components
 ------------------------
 
-Evaluation Procedure
-~~~~~~~~~~~~~~~~~~~~
+The system is composed of two primary, cascaded models, as illustrated in the diagram below.
 
-For each architecture:
+.. figure:: /_static/model.svg
+   :align: center
+   :width: 800px
+   :alt: Detailed model architecture of Sigma
 
-1. Implemented as the first autoencoder for signature generation.
-2. Implemented as the second dual-head autoencoder.
-3. Performance evaluated in terms of:
+**Stage 1: The Signature Extractor**
 
-   - Quality of signature reconstruction.
-   - Accuracy of future behavior prediction.
+*   This first component is a pre-trained **LSTM Autoencoder** whose encoder part is used as a universal feature extractor.
+*   Its sole purpose is to take a sequence of raw time-series data and transform it into a compact **8-dimensional signature vector (Z)**.
+*   This model is trained once on a vast corpus of normal operational data to master the "language" of the system's dynamics, acting as a powerful tool for **Transfer Learning**.
 
-Evaluation Metrics
-~~~~~~~~~~~~~~~~~~
+**Stage 2: The Processor Model**
 
-+-------------------+-------------------------------------------------------------+--------------------------------+
-| Metric            | Description                                                 | Application                    |
-+===================+=============================================================+================================+
-| MSE               | Mean Squared Error                                          | Signature reconstruction       |
-+-------------------+-------------------------------------------------------------+--------------------------------+
-| MAE               | Mean Absolute Error                                         | Signature reconstruction       |
-+-------------------+-------------------------------------------------------------+--------------------------------+
-| RMSE              | Root Mean Squared Error                                     | Future behavior prediction     |
-+-------------------+-------------------------------------------------------------+--------------------------------+
-| MAPE              | Mean Absolute Percentage Error                              | RUL estimation                 |
-+-------------------+-------------------------------------------------------------+--------------------------------+
-| Inference Time    | Duration of model inference                                 | Real-time applicability        |
-+-------------------+-------------------------------------------------------------+--------------------------------+
+*   This is the core analysis engine, a **CNN-BiLSTM Autoencoder** optimized for performance. It takes the 8D signature from the Signature Extractor as input and performs two simultaneous tasks through its dual-head design:
+    *   **Reconstruction Head**: Attempts to reconstruct the input signature. A high **Reconstruction Error** signals that the current system state is inconsistent or statistically unlikely.
+    *   **Prediction Head**: Attempts to predict the signature of the *next* time step. A high **Prediction Error** indicates that the system's behavior is deviating from its expected dynamic trajectory.
 
-Experimental Protocol
----------------------
+**Final Anomaly Score**
 
-Data Preprocessing
-~~~~~~~~~~~~~~~~~~
+The final anomaly score is a weighted combination of the Reconstruction Error and the Prediction Error. This creates a highly robust metric that is sensitive to both static anomalies (unusual states) and dynamic anomalies (unexpected behavior).
 
-1. **Normalization**: Apply z-score or min-max normalization based on data distribution.
-2. **Segmentation**: Divide time series into fixed-size windows.
-3. **Data Augmentation**: Apply identical augmentation techniques across all models.
-
-Hyperparameters
-~~~~~~~~~~~~~~~
-
-Optimize the following hyperparameters for each architecture:
-
-- Bottleneck size (latent dimension)
-- Number of layers
-- Units per layer
-- Learning rate
-- Activation function
-
-Optimization is performed via cross-validation using grid search or Bayesian optimization.
-
-Results and Analysis
---------------------
-
-Global Comparative Table
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-+------------------+--------------------+-----------------+-----------+--------------------+----------------------------+
-| Model            | MSE Reconstruction | RMSE Prediction | MAPE RUL  | Training Time      | Inference Time             |
-+==================+====================+=================+===========+====================+============================+
-| Linear-AE        | [To be completed]  | [To be completed] | [To be completed] | [To be completed] | [To be completed] |
-+------------------+--------------------+-----------------+-----------+--------------------+----------------------------+
-| LSTM-AE          | [To be completed]  | [To be completed] | [To be completed] | [To be completed] | [To be completed] |
-+------------------+--------------------+-----------------+-----------+--------------------+----------------------------+
-| BiLSTM-AE        | [To be completed]  | [To be completed] | [To be completed] | [To be completed] | [To be completed] |
-+------------------+--------------------+-----------------+-----------+--------------------+----------------------------+
-| CAE              | [To be completed]  | [To be completed] | [To be completed] | [To be completed] | [To be completed] |
-+------------------+--------------------+-----------------+-----------+--------------------+----------------------------+
-| ConvBiLSTM-AE    | [To be completed]  | [To be completed] | [To be completed] | [To be completed] | [To be completed] |
-+------------------+--------------------+-----------------+-----------+--------------------+----------------------------+
-
-Detailed Analysis by Model
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- **Linear-AE**: [To be completed]
-- **LSTM-AE**: [To be completed]
-- **BiLSTM-AE**: [To be completed]
-- **CAE**: [To be completed]
-- **ConvBiLSTM-AE**: [To be completed]
-
-
-Discussion
-----------
-
-Recommendations
----------------
-
-Based on the benchmarking results, we recommend:
-
-1. For signature generation autoencoder: [To be completed]
-2. For dual-head autoencoder: [To be completed]
-3. Optimal hyperparameter configurations: [To be completed]
-
-Implementation Code
-~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: python
-
-   # Example code for implementing the different architectures
-   # Will be provided after the experimentation phase
+.. note::
+   A detailed justification for the choice of each model architecture (LSTM, CNN-BiLSTM) and the hyperparameter optimization process is provided in the :doc:`Methodology and Models <methodology>` section.
