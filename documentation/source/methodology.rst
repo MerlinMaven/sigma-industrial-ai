@@ -21,7 +21,7 @@ To select the optimal models, we benchmarked a wide range of autoencoder archite
 - **Feature Extractor Selection**:
   We evaluated several architectures (Dense, CAE, LSTM, BiLSTM) based on their ability to create a compact and informative signature. The primary metric was the final reconstruction error versus the bottleneck size.
 
-  .. image:: _static/paretto.png
+  .. image:: _static/pareto.png
      :align: center
      :width: 600px
      :alt: Pareto Analysis for Bottleneck Selection
