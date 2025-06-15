@@ -52,7 +52,7 @@ Following the same rigorous methodology, a specialized model was derived for eac
    * - Industrial Component
      - Selected Signature Extractor
      - Selected Processor Model
-    * - **Vertical Linear Rail**
+   * - **Vertical Linear Rail**
      - LSTM AE (Bottleneck: 8)
      - CNN AE 
    * - **Robot 1 (Depalletizer)**
