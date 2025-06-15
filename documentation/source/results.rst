@@ -52,20 +52,23 @@ Following the same rigorous methodology, a specialized model was derived for eac
    * - Industrial Component
      - Selected Signature Extractor
      - Selected Processor Model
+    * - **Vertical Linear Rail**
+     - LSTM AE (Bottleneck: 8)
+     - CNN AE (Optimized)
    * - **Robot 1 (Depalletizer)**
      - LSTM AE (Bottleneck: 8)
-     - CNN-BiLSTM AE (Optimized)
+     - Dense AE 
    * - **Robot 2 (Filler)**
      - LSTM AE (Bottleneck: 8)
-     - CNN-BiLSTM AE (Optimized)
+     - Dense AE 
    * - **Robot 3 (Palletizer Rail)**
      - LSTM AE (Bottleneck: 8)
-     - CNN-BiLSTM AE (Optimized)
+     - Dense AE 
    * - **Conveyor_Box**
-     - CAE (Bottleneck: 16)
-     - Dense AE (Optimized)
+     - 
+     - CNN-BiLSTM AE (Optimized)
    * - **Conveyor_Bottle**
-     - CAE (Bottleneck: 16)
-     - Dense AE (Optimized)
+     - 
+     - CNN-BiLSTM AE (Optimized)
 
 This modular, custom-tailored approach ensures maximum performance for each component while leveraging a consistent and scalable end-to-end pipeline.
