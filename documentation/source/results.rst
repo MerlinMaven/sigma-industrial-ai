@@ -54,7 +54,7 @@ Following the same rigorous methodology, a specialized model was derived for eac
      - Selected Processor Model
     * - **Vertical Linear Rail**
      - LSTM AE (Bottleneck: 8)
-     - CNN AE (Optimized)
+     - CNN AE 
    * - **Robot 1 (Depalletizer)**
      - LSTM AE (Bottleneck: 8)
      - Dense AE 
@@ -65,10 +65,10 @@ Following the same rigorous methodology, a specialized model was derived for eac
      - LSTM AE (Bottleneck: 8)
      - Dense AE 
    * - **Conveyor_Box**
-     - 
-     - CNN-BiLSTM AE (Optimized)
+     - -----
+     - CNN-BiLSTM AE 
    * - **Conveyor_Bottle**
-     - 
-     - CNN-BiLSTM AE (Optimized)
+     - -----
+     - CNN-BiLSTM AE
 
 This modular, custom-tailored approach ensures maximum performance for each component while leveraging a consistent and scalable end-to-end pipeline.
