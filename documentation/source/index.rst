@@ -16,7 +16,7 @@ Welcome to Sigma's Documentation!
    Architecture <architecture>
    Methodology and Models <methodology>
    Results Analysis <results>
-   Deployment and Dashboard <deployment>
+   Deployment and Dashboard <deploiment>
 
 .. toctree::
    :maxdepth: 2
