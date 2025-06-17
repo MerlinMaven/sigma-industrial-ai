@@ -58,7 +58,7 @@ The notebook is designed to be executed from top to bottom. It contains all the 
 This action will:
 
 1.  Load the pre-generated time-series data.
-2.  Load the pre-trained **Signature Extractor** (`LSTM_AE`) and the **Processor Model** (`CNN_BILSTM_AE`).
+2.  Load the pre-trained **Signature Extractor** (`LSTM_AE`) and the **Processor Model** (`CNN_AE`).
 3.  Execute the full analysis pipeline, including the benchmark against classical methods.
 4.  Generate and display all the final plots and quantitative reports directly within the notebook.
 
