@@ -40,7 +40,7 @@ Once all components are loaded, they must be assembled into a functional workcel
     - Place the **table** at the center of your station.
     - Position the two **conveyors** on opposite sides of the work area. You can resize them by double-clicking the item and selecting "More options...".
 
-4.  **Define Reference Frames (Expert Practice)**:
+4.  **Define Reference Frames**:
     Using reference frames is critical for robust programming. Create new frames using the **"Add a new Reference Frame"** icon.
     -   Create and position a frame named ``Frame_Prise_Bouteille`` at the pick-up location on the inbound conveyor.
     -   Create and position another frame named ``Frame_Depot_Boite`` at the drop-off location on the outbound conveyor.
@@ -67,11 +67,13 @@ With the cell assembled, the next step is to program the robot's movements and a
 
 3.  **Add Movement Instructions**:
     From the toolbar, add movement instructions to your program.
+
     -   **Joint Move**: Use for fast, non-linear movements (e.g., returning to `Target_Home`).
     -   **Linear Move**: Use for precise approaches and retreats where a straight-line path is required.
 
 4.  **Simulate Gripper and Conveyor Actions**:
     Use the **"Program call"** instruction to trigger events.
+
     -   **To pick up an object**: After moving to the grip target, add a program call with the instruction ``Attach(Bottle)``.
     -   **To release an object**: After moving to the release target, add a program call with ``Detach(Conveyor_2)``. The object will attach to the nearest surface below.
     -   **To control conveyors**: A program call can execute a small Python script to set the conveyor's speed, for example: `convoyeur.setSpeed(50)`.
@@ -80,12 +82,5 @@ Step 4: Orchestrating the Final Program
 ----------------------------------------
 
 Your final `Main_Program` in the RoboDK tree should represent a logical, looping sequence of these instructions, creating a continuous and realistic simulation of the industrial task.
-
-.. figure:: /_static/robodk_program_tree.png
-   :align: center
-   :width: 400px
-   :alt: Example of a program structure in the RoboDK tree.
-
-   *An example of how the main program loop can be structured in the RoboDK project tree.*
 
 By following this guide, you can precisely replicate the simulation environment used for this project, ensuring a consistent foundation for data generation and analysis.
