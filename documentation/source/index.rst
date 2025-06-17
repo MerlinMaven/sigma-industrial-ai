@@ -14,6 +14,7 @@ Welcome to Sigma's Documentation!
    :caption: Project Details
 
    Data Overview <data>
+   simulation_environment <simulation>
    Architecture <architecture>
    Methodology and Models <methodology>
    Results Analysis <results>
