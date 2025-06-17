@@ -2,85 +2,87 @@
 Guide: Reproducing the Simulation Environment
 ============================================
 
-This guide provides a detailed, step-by-step walkthrough for recreating the **Sigma Project's simulation environment** from scratch in RoboDK. Following these instructions will allow you to build the digital twin used for our data generation and experiments.
+This guide provides a step-by-step walkthrough to recreate the **Sigma Project's simulation environment** from scratch using RoboDK. Following these instructions will allow you to build the digital twin used for our data generation and experimental pipeline.
 
 **Prerequisites:**
 
-*   A working installation of **RoboDK**.
-*   Basic familiarity with the RoboDK interface (navigating the tree, adding items, etc.).
+- A working installation of **RoboDK**.
+- Basic familiarity with the RoboDK interface (e.g., navigating the tree, adding items).
 
 Step 1: Assembling the Workcell Components
----------------------------------------------
+------------------------------------------
 
-The first step is to populate the simulation (known as a "station") with all the necessary components from RoboDK's extensive online library.
+The first step is to populate the simulation station with all necessary components from RoboDK's online library.
 
-1.  **Open the Online Library**: In RoboDK, click the **"Open online library"** icon (a globe 🌐 in the main toolbar).
+1. **Open the Online Library**: Click the **"Open online library"** icon (🌐) in the main toolbar.
 
-2.  **Download Assets**: Use the search bar in the library to find and download the following items. Each will be automatically added to your station.
-    
-    -   **Robot**: ``Universal Robots UR10e``
-    -   **Linear Rail**: Search for a compatible rail. Generic options like ``SMC LEY`` or models from ``IGUS`` are excellent choices.
-    -   **Conveyors**: Search for ``conveyor`` and select two instances of a model like ``Conveyor Belt``. Their dimensions can be adjusted later.
-    -   **Gripper Tool**: Search for ``Robotiq 2F-85``, a common gripper for UR robots.
-    -   **Parts**: Search for and download a simple ``Box`` and ``Bottle``.
-    -   **Workstation**: Search for a ``Table`` or ``Workbench`` to serve as the base.
+2. **Download Required Assets**:
+   Search and download the following items (they will be added directly to your station):
 
-Step 2: Staging the Simulation Environment
--------------------------------------------
+   - **Robot**: ``Universal Robots UR10e``
+   - **Linear Rail**: Search for a compatible rail such as ``SMC LEY`` or ``IGUS``
+   - **Conveyors**: Add two instances of ``Conveyor Belt`` (can be resized later)
+   - **Gripper Tool**: ``Robotiq 2F-85``
+   - **Parts**: ``Box`` and ``Bottle``
+   - **Workstation**: ``Table`` or ``Workbench``
 
-Once all components are loaded, they must be assembled into a functional workcell. This is done by structuring the items in RoboDK's project tree.
+Step 2: Structuring the Workcell
+---------------------------------
 
-1.  **Mount Robot on Rail**:
-    In the project tree on the left, **drag the `UR10e` robot item and drop it directly onto the `Linear Rail` item**. RoboDK will automatically link them, making the robot move with the rail.
+Once all components are loaded, assemble them into a functional workcell:
 
-2.  **Attach Tool to Robot**:
-    Similarly, **drag the `Robotiq 2F-85` gripper and drop it onto the `UR10e` robot**. The tool will snap to the robot's flange, and a default Tool Center Point (TCP) will be created.
+1. **Mount the Robot on the Rail**:
+   Drag the `UR10e` robot item and drop it onto the `Linear Rail` item. This links the robot to the rail, allowing synchronized motion.
 
-3.  **Position Key Components**:
-    - Place the **table** at the center of your station.
-    - Position the two **conveyors** on opposite sides of the work area. You can resize them by double-clicking the item and selecting "More options...".
+2. **Attach the Tool to the Robot**:
+   Drag the `Robotiq 2F-85` gripper onto the `UR10e` robot. RoboDK will automatically assign it to the flange.
 
-4.  **Define Reference Frames**:
-    Using reference frames is critical for robust programming. Create new frames using the **"Add a new Reference Frame"** icon.
-    -   Create and position a frame named ``Frame_Prise_Bouteille`` at the pick-up location on the inbound conveyor.
-    -   Create and position another frame named ``Frame_Depot_Boite`` at the drop-off location on the outbound conveyor.
+3. **Position Key Components**:
+   - Place the **table** at the center.
+   - Position the **conveyors** on each side of the work area. Resize via: *double-click → More Options*.
 
-5.  **Initial Part Placement**:
-    Place a ``Bottle`` object on the inbound conveyor, near the ``Frame_Prise_Bouteille``.
+4. **Define Reference Frames**:
+   Create new frames using the **"Add a new Reference Frame"** icon:
+   - ``Frame_Prise_Bouteille`` → near the bottle on the inbound conveyor
+   - ``Frame_Depot_Boite`` → above the box on the outbound conveyor
 
+5. **Initial Object Placement**:
+   Place a `Bottle` object near `Frame_Prise_Bouteille`.
 
 Step 3: Programming the Robotic Task
 -------------------------------------
 
-With the cell assembled, the next step is to program the robot's movements and actions.
+With the environment set up, the robot can now be programmed.
 
-1.  **Create Key Targets**:
-    A "Target" is a saved robot position. Manually move the robot to each key location and create a new target by clicking the **"Add a new Target"** icon.
-    
-    -   ``Target_Home``: A safe, neutral position.
-    -   ``Target_Approche_Bouteille``: A point directly above the bottle.
-    -   ``Target_Prise_Bouteille``: The exact position for gripping the bottle.
-    -   Create corresponding targets for the box drop-off location (`Target_Approche_Boite`, `Target_Depot_Boite`).
+1. **Create Key Targets**:
+   Move the robot manually to key positions and save each as a Target:
 
-2.  **Build the Main Program**:
-    Click **"Add a new Program"** and name it `Main_Program`. This will contain the main logic loop.
+   - `Target_Home`: Safe neutral position
+   - `Target_Approche_Bouteille` → above the bottle
+   - `Target_Prise_Bouteille` → exact pick-up point
+   - `Target_Approche_Boite` and `Target_Depot_Boite` → drop-off points
 
-3.  **Add Movement Instructions**:
-    From the toolbar, add movement instructions to your program.
+2. **Create the Main Program**:
+   Click **"Add a new Program"** and name it `Main_Program`.
 
-    -   **Joint Move**: Use for fast, non-linear movements (e.g., returning to `Target_Home`).
-    -   **Linear Move**: Use for precise approaches and retreats where a straight-line path is required.
+3. **Add Robot Instructions**:
+   Use movement instructions to build the task logic:
 
-4.  **Simulate Gripper and Conveyor Actions**:
-    Use the **"Program call"** instruction to trigger events.
+   - `MoveJ`: For joint-space (fast) movements like `Target_Home`
+   - `MoveL`: For precise, straight-line moves to approach/release points
 
-    -   **To pick up an object**: After moving to the grip target, add a program call with the instruction ``Attach(Bottle)``.
-    -   **To release an object**: After moving to the release target, add a program call with ``Detach(Conveyor_2)``. The object will attach to the nearest surface below.
-    -   **To control conveyors**: A program call can execute a small Python script to set the conveyor's speed, for example: `convoyeur.setSpeed(50)`.
+4. **Simulate Gripper and Conveyor Actions**:
+   Use **Program Calls** for interaction logic:
+
+   - To pick up: `Attach(Bottle)` after `Target_Prise_Bouteille`
+   - To drop off: `Detach(Conveyor_2)` after `Target_Depot_Boite`
+   - To control conveyors: execute a script like `conveyor.setSpeed(50)`
 
 Step 4: Orchestrating the Final Program
-----------------------------------------
+---------------------------------------
 
-Your final `Main_Program` in the RoboDK tree should represent a logical, looping sequence of these instructions, creating a continuous and realistic simulation of the industrial task.
+The `Main_Program` should represent a clean loop: from pick-up, to transfer, to drop-off — then back to home. This creates a continuous, realistic simulation of the industrial task.
 
-By following this guide, you can precisely replicate the simulation environment used for this project, ensuring a consistent foundation for data generation and analysis.
+---
+
+By following this guide, any user can **faithfully reproduce** the simulation environment used in Project Sigma. This ensures reproducibility and provides a solid foundation for real-time data collection and algorithm validation.
