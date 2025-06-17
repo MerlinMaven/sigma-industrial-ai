@@ -12,7 +12,7 @@ Welcome to Sigma's Documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Project Details
-
+   Data Overview <data>
    Architecture <architecture>
    Methodology and Models <methodology>
    Results Analysis <results>
