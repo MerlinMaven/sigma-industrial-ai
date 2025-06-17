@@ -10,7 +10,7 @@ Welcome to Sigma's Documentation!
    Quick Start Guide <quickstart>
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Project Details
    Data Overview <data>
    Architecture <architecture>
