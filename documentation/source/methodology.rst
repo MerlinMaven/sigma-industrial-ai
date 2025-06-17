@@ -29,11 +29,11 @@ To select the optimal models, we benchmarked a wide range of autoencoder archite
   As shown in the Pareto analysis, the **LSTM Autoencoder with an 8-dimensional bottleneck** provided the best trade-off between a low reconstruction error and a highly compact signature. It was therefore selected as our Signature Extractor.
 
 - **Processor Model Selection**:
-  For the core processor, we implemented and compared several dual-head models. The **CNN-BiLSTM** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
+  For the core processor, we implemented and compared several dual-head models. The **CNN** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
 
 3. Hyperparameter Optimization with Optuna
 ------------------------------------------
-To maximize the performance of our selected `CNN-BiLSTM` processor, we conducted an extensive hyperparameter search using **Optuna**.
+To maximize the performance of our selected `CNN` processor, we conducted an extensive hyperparameter search using **Optuna**.
 
 .. figure:: /_static/optuna_optimization_history.png
    :align: center
@@ -51,7 +51,7 @@ b) The state-of-the-art performance of our final model compared to industry-stan
 To do this, we compared three types of models:
 - Classical algorithms (Isolation Forest, One-Class SVM) on **raw, high-dimensional data**.
 - The same classical algorithms on our **learned, low-dimensional signatures**.
-- Our final, optimized **CNN-BiLSTM AE** on the signatures.
+- Our final, optimized **CNN AE** on the signatures.
 
 .. figure:: /_static/final_benchmark_violin_plot.png
    :align: center

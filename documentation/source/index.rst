@@ -6,8 +6,8 @@ Welcome to Sigma's Documentation!
    :maxdepth: 2
    :caption: Getting Started
 
-   Quick Start Guide <quickstart>
    Introduction <Introduction>
+   Quick Start Guide <quickstart>
 
 .. toctree::
    :maxdepth: 2
@@ -22,5 +22,5 @@ Welcome to Sigma's Documentation!
    :maxdepth: 2
    :caption: About the Project
 
-   Team and Credits <team>
+   Team <team>
    GitHub Repository <https://github.com/MerlinMaven/sigma-industrial-ai.git>

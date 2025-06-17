@@ -9,15 +9,17 @@ The methodology described in the previous section was applied systematically to 
 Case Study: Performance on the Vertical Linear Rail
 ------------------------------------------------------
 .. note::
-   This analysis uses the final pipeline: the **LSTM-based Signature Extractor** followed by the **Optuna-optimized CNN-BiLSTM Processor Model**.
+   This analysis uses the final pipeline: the **LSTM-based Signature Extractor** followed by the **Optuna-optimized CNN Processor Model**.
 
 **Qualitative Analysis: Reconstruction & Prediction**
 
 The following plots compare the original time-series signal with the outputs of our model's two tasks: reconstructing the current state and predicting the state one step into the future.
 
-*(Insérez ici votre graphique principal de comparaison avec le zoom)*
+.. image:: _static/resultat.png
+    :width: 100%
+    :alt: results
 
-The model demonstrates high fidelity in both tasks. The reconstructed signal (in red) almost perfectly overlays the original signal. The predicted signal (in blue), while slightly less precise as expected, successfully captures the dynamic trends, proving the model's deep understanding of the system's behavior.
+The model demonstrates high fidelity in both tasks. The reconstructed signal  almost perfectly overlays the original signal. The predicted signal , while slightly less precise as expected, successfully captures the dynamic trends, proving the model's deep understanding of the system's behavior.
 
 **Quantitative Analysis: Performance Metrics**
 
@@ -32,15 +34,15 @@ To quantify this performance, we calculated the Root Mean Squared Error (RMSE) a
       =============================================================================
       Feature              | Tâche              | MAE (Erreur Moyenne) | RMSE
       -----------------------------------------------------------------------------
-      rail_position        | Reconstruction     | 10.0771              | 15.5968
-                           | Prédiction (t+1)   | 13.7775              | 25.2882
+      rail_position        | Reconstruction     | 8.9435               | 15.5968
+                           | Prédiction (t+1)   | 11.6729              | 22.5138
       -----------------------------------------------------------------------------
-      rail_speed           | Reconstruction     | 73.3913              | 132.0795
-                           | Prédiction (t+1)   | 87.5624              | 164.0219
+      rail_speed           | Reconstruction     | 53.8521              | 103.9148  
+                           | Prédiction (t+1)   | 62.4520              | 126.5542
       -----------------------------------------------------------------------------
-      rail_acceleration    | Reconstruction     | 745.5022             | 1271.2927
-                           | Prédiction (t+1)   | 814.0240             | 1365.6223
-    
+      rail_acceleration    | Reconstruction     | 182.3538             | 274.1707
+                           | Prédiction (t+1)   | 234.3421             | 361.0231
+
 Summary of Models for the Entire Industrial Cell
 --------------------------------------------------
 Following the same rigorous methodology, a specialized model was derived for each component. The table below summarizes the final selected architectures.
