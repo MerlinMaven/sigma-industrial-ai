@@ -54,7 +54,7 @@ The optimization process led to a significantly improved encoder:
 This represents a **23.6% reduction in reconstruction error**, justifying the optimization step. The final **optimized LSTM AE (8)** was adopted as the definitive Signature Extractor.
 
 **Note on the Processor Model**:  
-We also attempted to optimize the CNN-BiLSTM processor model. However, the gains were marginal, confirming that **the quality of the initial signature** is the main determinant of pipeline performance. Hence, efforts were concentrated on optimizing the encoder.
+We also attempted to optimize the CNN  processor model. However, the gains were marginal, confirming that **the quality of the initial signature** is the main determinant of pipeline performance. Hence, efforts were concentrated on optimizing the encoder.
 
 3. Final Validation: Demonstrating the Value of Learned Representations
 ------------------------------------------------------------------------
@@ -73,7 +73,7 @@ b) Our **final deep learning pipeline** surpasses classical industry-standard mo
 
 Results were unequivocal:  
 - Classical models (Isolation Forest, One-Class SVM) trained on our **8D learned signatures** achieved **10–15% better performance** than when trained on **raw 60D data**, validating our representation learning hypothesis.  
-- Our **optimized CNN-BiLSTM AE** achieved the most distinct separation between normal and anomalous samples, highlighting its superior modeling capacity.
+- Our **optimized CNN AE** achieved the most distinct separation between normal and anomalous samples, highlighting its superior modeling capacity.
 
 .. note::
 
