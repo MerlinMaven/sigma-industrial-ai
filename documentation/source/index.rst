@@ -10,8 +10,9 @@ Welcome to Sigma's Documentation!
    Quick Start Guide <quickstart>
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    :caption: Project Details
+
    Data Overview <data>
    Architecture <architecture>
    Methodology and Models <methodology>
