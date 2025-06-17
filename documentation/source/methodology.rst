@@ -2,68 +2,82 @@
 Methodology & Model Selection
 ===========================
 
-The final architecture of Project Sigma is not a default choice but the outcome of a **rigorous, multi-stage experimental process**. This process was designed to scientifically validate our core hypotheses and identify the most effective components for each stage of the pipeline.
+The architecture of Project Sigma is not a default choice but the result of a **rigorous, multi-stage experimental process**. This process was designed to scientifically validate our core hypotheses and identify the most effective components for each stage of the pipeline.
 
-Our evaluation methodology followed these key phases:
+Our methodology is divided into three key phases: data preparation, model selection, and final validation.
 
 1. Exploratory Data Analysis (EDA) and Preprocessing
 -------------------------------------------------------
-This initial phase focused on understanding the raw data's characteristics to inform our modeling strategy.
 
-- **Statistical Analysis & Visualization**: We analyzed the distribution, trends, and seasonality of each time-series feature to establish a baseline understanding.
-- **Signal Smoothing**: To ensure our models learned meaningful patterns instead of sensor noise, we applied filtering techniques (e.g., moving averages) to the more volatile signals, such as acceleration.
-- **Dimensionality Estimation with PCA**: A Principal Component Analysis (PCA) was conducted on the raw data to estimate its intrinsic dimensionality. This analysis guided the design of our autoencoder's bottleneck, helping us set a reasonable target for our signature's size.
+A deep understanding of the data was fundamental. Our EDA was specifically oriented toward developing a strategy for **short-term anomaly detection**, rather than long-term forecasting.
 
-2. Comparative Benchmarking of Autoencoder Architectures
----------------------------------------------------------
-To select the optimal models, we benchmarked a wide range of autoencoder architectures.
+- **Signal Analysis & Smoothing**:  
+  The initial analysis revealed that the ``rail_acceleration`` signal was highly volatile (kurtosis > 17), indicating significant high-frequency noise. A Fast Fourier Transform (FFT) confirmed this. To ensure our models learned meaningful dynamics rather than noise, we applied a **Savitzky-Golay filter**, with its hyperparameters optimized to strike a balance between noise reduction and signal preservation.
 
-- **Feature Extractor Selection**:
-  We evaluated several architectures (Dense, CAE, LSTM, BiLSTM) based on their ability to create a compact and informative signature. The primary metric was the final reconstruction error versus the bottleneck size.
+- **Dimensionality Estimation via PCA**:  
+  Before employing non-linear models, we performed a Principal Component Analysis (PCA) to estimate the intrinsic dimensionality of the time-series windows. The analysis showed that **9 principal components** explained over **90% of the linear variance**, supporting the use of **low-dimensional signatures** (e.g., 8D, 16D) in autoencoder design.
 
-  .. image:: _static/pareto.png
-     :align: center
-     :width: 600px
-     :alt: Pareto Analysis for Bottleneck Selection
+2. Model Selection through Systematic Benchmarking
+-----------------------------------------------------
 
-  As shown in the Pareto analysis, the **LSTM Autoencoder with an 8-dimensional bottleneck** provided the best trade-off between a low reconstruction error and a highly compact signature. It was therefore selected as our Signature Extractor.
+Our core hypothesis is that a **specialized two-stage deep learning pipeline** outperforms generic models. We validated this via a structured benchmarking process.
 
-- **Processor Model Selection**:
-  For the core processor, we implemented and compared several dual-head models. The **CNN** architecture demonstrated the best overall performance in simultaneously minimizing both reconstruction and prediction errors on the signature space.
+**Stage 1: Selecting the Optimal Signature Extractor**
 
-3. Hyperparameter Optimization with Optuna
-------------------------------------------
-To maximize the performance of our selected `CNN` processor, we conducted an extensive hyperparameter search using **Optuna**.
+We aimed to identify an autoencoder that produced a compact yet expressive signature. Five architectures were benchmarked—Dense AE, CAE, LSTM AE, CNN+LSTM, CNN+BiLSTM—across four bottleneck dimensions (4, 8, 16, 32).
+
+.. figure:: _static/pareto.png
+   :align: center
+   :width: 700px
+   :alt: Pareto Analysis for Bottleneck Selection
+
+   *Pareto frontier of 20 model configurations: reconstruction MSE vs. model complexity.*
+
+The analysis revealed that the **LSTM Autoencoder with an 8-dimensional bottleneck** offered the best trade-off. It matched the reconstruction quality of larger models (16D, 32D), while producing a signature **4x more compact**—critical for deployment in industrial environments. This model was selected as our primary encoder.
+
+**Stage 2: Optimizing the LSTM Encoder**
+
+After identifying the LSTM AE (8) as the most promising, we used **Optuna**, a Bayesian optimization framework, to fine-tune key hyperparameters (LSTM units, learning rate, batch size). The objective was to minimize the validation reconstruction error.
 
 .. figure:: /_static/optuna_optimization_history.png
    :align: center
-   :width: 500px
+   :width: 700px
    :alt: Optuna Optimization History
 
-The 50-trial optimization successfully converged towards a superior set of parameters, **reducing the final prediction loss by over 30%** compared to our initial baseline configuration. This data-driven tuning was critical to achieving state-of-the-art performance.
+   *Optimization log from the Optuna study.*
 
-4. Final Validation & Benchmarking
-------------------------------------
-With our optimized model finalized, we conducted a final validation to prove two key points:
-a) The superiority of operating on learned signatures over raw data.
-b) The state-of-the-art performance of our final model compared to industry-standard algorithms.
+The optimization process led to a significantly improved encoder:
 
-To do this, we compared three types of models:
-- Classical algorithms (Isolation Forest, One-Class SVM) on **raw, high-dimensional data**.
-- The same classical algorithms on our **learned, low-dimensional signatures**.
-- Our final, optimized **CNN AE** on the signatures.
+    - Validation MSE Before Optimization: 0.000373  
+    - Validation MSE After Optimization:  0.000285  
+
+This represents a **23.6% reduction in reconstruction error**, justifying the optimization step. The final **optimized LSTM AE (8)** was adopted as the definitive Signature Extractor.
+
+**Note on the Processor Model**:  
+We also attempted to optimize the CNN-BiLSTM processor model. However, the gains were marginal, confirming that **the quality of the initial signature** is the main determinant of pipeline performance. Hence, efforts were concentrated on optimizing the encoder.
+
+3. Final Validation: Demonstrating the Value of Learned Representations
+------------------------------------------------------------------------
+
+To conclude, we validated two key hypotheses:
+
+a) **Learned representations (signatures) outperform raw data**  
+b) Our **final deep learning pipeline** surpasses classical industry-standard models
 
 .. figure:: /_static/final_benchmark_violin_plot.png
    :align: center
    :width: 800px
-   :alt: Anomaly Score Distribution Benchmark: Raw Data vs. Signatures vs. Final Model
+   :alt: Anomaly Score Distribution Benchmark: Raw Data vs. Signatures
 
-The results are unequivocal. Firstly, models trained on signatures showed a **significant performance uplift of 10-15%** over those trained on raw data, validating our core hypothesis. Secondly, our final **CNN-BiLSTM AE** provides the sharpest and most reliable separation between normal and anomalous behavior, confirming its superior performance for this task.
+   *Comparison of anomaly score distributions. Better models produce narrow peaks near zero and long tails for anomalies.*
+
+Results were unequivocal:  
+- Classical models (Isolation Forest, One-Class SVM) trained on our **8D learned signatures** achieved **10–15% better performance** than when trained on **raw 60D data**, validating our representation learning hypothesis.  
+- Our **optimized CNN-BiLSTM AE** achieved the most distinct separation between normal and anomalous samples, highlighting its superior modeling capacity.
 
 .. note::
 
-   The detailed, layer-by-layer architecture of the final, optimized models is provided in the :doc:`Model Implementation Details Appendix <appendix/model_details>`. 
-   
-   Furthermore, the full code for all experiments described above—from benchmarking to optimization—is available in our `Jupyter Notebooks on GitHub <lien_vers_notebook>`.
+   The full architectural details of the final models are available in :doc:`appendix/model_details`.  
+   All source code and experiment notebooks are provided in our `GitHub repository <lien_vers_notebook>`.
 
-The complete quantitative and qualitative performance analysis of this final pipeline is presented in the next section, **Results Analysis**.
+The full performance analysis—both qualitative and quantitative—is presented in the **:doc:`results`** section.
