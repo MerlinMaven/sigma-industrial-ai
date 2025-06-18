@@ -32,7 +32,7 @@ To maximize accessibility and efficiency, we moved beyond a purely visual dashbo
 
 Our design philosophy for the chatbot is a **"Dual Menu" approach**, which combines a proactive, button-driven main menu with guided question-and-answer dialogues.
 
-.. figure:: /_static/chatbot_dual_menu_concept.png
+.. figure:: /_static/chat.png
    :align: center
    :width: 700px
    :alt: The Dual Menu concept for the Ask Sigma chatbot.
