@@ -14,40 +14,43 @@ st.set_page_config(page_title="Tableau de Bord Multi-Robots", page_icon="🏭", 
 # =============================================================================
 # 1. CONFIGURATION CENTRALISÉE DES ROBOTS
 # =============================================================================
-# On stocke les informations de chaque robot dans un dictionnaire.
-# C'est propre, évolutif et facile à maintenir.
 ROBOT_CONFIG = {
     "Robot 1 (UR10e)": {
+        "type": "robot",
         "csv_path": "data/UR10e_1_robot_data.csv",
         "encoder_path": "R_ts/R_ts/Robot_1/Signature/robot_1_LSTMAE_bottleneck8.h5",
         "processor_path": "R_ts/R_ts/Robot_1/M_double_tete/robot_1_dense_32_20250613_212536.h5"
     },
     "Robot 2 (UR10e)": {
+        "type": "robot",
         "csv_path": "data/UR10e_2_robot_data.csv",
         "encoder_path": "R_ts/R_ts/Robot_2/Signature/robot_2_LSTMAE_bottleneck8.h5",
         "processor_path": "R_ts/R_ts/Robot_2/M_double_tete/robot_2_dense_32_20250613_154848.h5"
     },
     "Robot 3 (UR10e)": {
+        "type": "robot",
         "csv_path": "data/UR10e_3_robot_data.csv",
         "encoder_path": "R_ts/R_ts/Robot_3/Signature/robot_3_LSTMAE_bottleneck8.h5",
         "processor_path": "R_ts/R_ts/Robot_3/M_double_tete/robot_3_dense_32_20250613_155011.h5"
     },
-        "Linear Rail": {
+    "Linear Rail": {
+        "type": "rail",
         "csv_path": "data/Linear_Rail_rail_data.csv",
         "encoder_path": "R_ts/R_ts/Rail_Linéaire/Signature/OPTIMIZED_LSTM_AE_bottleneck_8.h5",
         "processor_path": "R_ts/R_ts/Rail_Linéaire/M_double_tete/Best_DualHead_AE_CNN_AE.h5"
     },
-        "Conveyor_Bottle": {
+    "Conveyor_Bottle": {
+        "type": "conveyor",
         "csv_path": "data/Conveyor_Bottle_conveyor_data.csv",
         "model_path": "R_ts/R_ts/Convoyeru Bottle/BiLSTM_AE_complete.h5"
     },
-        "Conveyor_Box": {
+    "Conveyor_Box": {
+        "type": "conveyor",
         "csv_path": "data/Conveyor_Box_conveyor_data.csv",
         "model_path": "R_ts/R_ts/Convoyeur_Box/BiLSTM_AE_complete.h5"
     }
 }
 
-# Les features sont les mêmes pour tous les robots, on peut les laisser ici.
 FEATURES_TO_PLOT = [
     'joint_1_pos', 'joint_2_pos', 'joint_3_pos', 'joint_4_pos', 'joint_5_pos', 'joint_6_pos',
     'joint_1_speed', 'joint_2_speed', 'joint_3_speed', 'joint_4_speed', 'joint_5_speed', 'joint_6_speed',
@@ -59,17 +62,13 @@ FEATURES_FOR_SIGNATURE = [
     'acc_lisse_joint_1', 'acc_lisse_joint_2', 'acc_lisse_joint_3', 'acc_lisse_joint_4', 'acc_lisse_joint_5', 'acc_lisse_joint_6',
     'tcp_x', 'tcp_y', 'tcp_z', 'tcp_rx', 'tcp_ry', 'tcp_rz', 'cycle_time'
 ]
-
-
 FEATURES_conv = ['conveyor_pos_x', 'conveyor_pos_y', 'conveyor_pos_z']
-FEATURES_rail = ['rail_position', 'rail_speed', 'acc_lisse']
+FEATURES_rail = ['rail_position', 'rail_speed', 'rail_acceleration']
 
-# Paramètres globaux
 TIME_COLUMN = 'timestamp'
 TIME_STEPS = 20
 SIMULATION_SPEED = 0.05
 ALERT_THRESHOLD = 0.8
-
 
 # =============================================================================
 # 2. FONCTIONS DE CALCUL (MISES EN CACHE)
@@ -90,31 +89,81 @@ def load_and_preprocess_data(path):
         st.error(f"Erreur lors du chargement de {path}: {e}"); return None
 
 @st.cache_data
-def setup_and_generate_all_analytics(_df_full, encoder_path, processor_path):
-    with st.spinner(f"Analyse IA pour {encoder_path.split('/')[2]}..."):
-        try:
+def setup_and_generate_all_analytics(_df_full, config):
+    try:
+        with st.spinner(f"Analyse IA pour {config['csv_path']}..."):
             scaler = MinMaxScaler()
-            data_scaled = scaler.fit_transform(_df_full[FEATURES_FOR_SIGNATURE])
-            sequences = np.array([data_scaled[i:i + TIME_STEPS] for i in range(len(data_scaled) - TIME_STEPS + 1)])
 
-            autoencoder_full = load_model(encoder_path, compile=False)
-            encoder_model = Model(inputs=autoencoder_full.input, outputs=autoencoder_full.get_layer('bottleneck').output)
-            processor_model = load_model(processor_path, compile=False)
+            if config["type"] == "robot":
+                features = FEATURES_FOR_SIGNATURE
+                encoder_path = config["encoder_path"]
+                processor_path = config["processor_path"]
 
-            all_signatures = encoder_model.predict(sequences, batch_size=256, verbose=0)
-            pca_reducer = PCA(n_components=1)
-            signatures_1d = pca_reducer.fit_transform(all_signatures.reshape(len(all_signatures), -1))
+                data_scaled = scaler.fit_transform(_df_full[features])
+                sequences = np.array([data_scaled[i:i + TIME_STEPS] for i in range(len(data_scaled) - TIME_STEPS + 1)])
 
-            reconstructed_sigs, predicted_sigs = processor_model.predict(all_signatures, batch_size=256, verbose=0)
-            errors_recon = np.mean(np.square(all_signatures - reconstructed_sigs), axis=1)
-            errors_pred = np.mean(np.square(all_signatures - predicted_sigs), axis=1)
-            final_errors = np.minimum(errors_recon, errors_pred)
-            anomaly_scores = np.clip(final_errors / 0.001, 0, 1.0)
-            
-            st.success(f"Analyse IA pour {encoder_path.split('/')[2]} terminée !")
-            return {"signatures_1d": signatures_1d, "anomaly_scores": anomaly_scores}
-        except Exception as e:
-            st.error(f"Erreur lors de l'analyse IA ({encoder_path.split('/')[2]}): {e}"); return None
+                autoencoder_full = load_model(encoder_path, compile=False)
+                encoder_model = Model(inputs=autoencoder_full.input, outputs=autoencoder_full.get_layer('bottleneck').output)
+                processor_model = load_model(processor_path, compile=False)
+
+                all_signatures = encoder_model.predict(sequences, batch_size=256, verbose=0)
+                pca_reducer = PCA(n_components=1)
+                signatures_1d = pca_reducer.fit_transform(all_signatures.reshape(len(all_signatures), -1))
+
+                reconstructed_sigs, predicted_sigs = processor_model.predict(all_signatures, batch_size=256, verbose=0)
+                errors_recon = np.mean(np.square(all_signatures - reconstructed_sigs), axis=1)
+                errors_pred = np.mean(np.square(all_signatures - predicted_sigs), axis=1)
+                final_errors = np.minimum(errors_recon, errors_pred)
+                anomaly_scores = np.clip(final_errors / 0.001, 0, 1.0)
+
+                return {"signatures_1d": signatures_1d, "anomaly_scores": anomaly_scores}
+
+            elif config["type"] == "rail":
+                features = FEATURES_rail
+                encoder_path = config["encoder_path"]
+                processor_path = config["processor_path"]
+
+                data_scaled = scaler.fit_transform(_df_full[features])
+                sequences = np.array([data_scaled[i:i + TIME_STEPS] for i in range(len(data_scaled) - TIME_STEPS + 1)])
+
+                autoencoder_full = load_model(encoder_path, compile=False)
+                encoder_model = Model(inputs=autoencoder_full.input, outputs=autoencoder_full.get_layer('bottleneck').output)
+                processor_model = load_model(processor_path, compile=False)
+
+                all_signatures = encoder_model.predict(sequences, batch_size=256, verbose=0)
+                pca_reducer = PCA(n_components=1)
+                signatures_1d = pca_reducer.fit_transform(all_signatures.reshape(len(all_signatures), -1))
+
+                reconstructed_sigs, predicted_sigs = processor_model.predict(all_signatures, batch_size=256, verbose=0)
+                errors_recon = np.mean(np.square(all_signatures - reconstructed_sigs), axis=1)
+                errors_pred = np.mean(np.square(all_signatures - predicted_sigs), axis=1)
+                final_errors = np.minimum(errors_recon, errors_pred)
+                anomaly_scores = np.clip(final_errors / 0.001, 0, 1.0)
+
+                return {"signatures_1d": signatures_1d, "anomaly_scores": anomaly_scores}
+
+            elif config["type"] == "conveyor":
+                features = FEATURES_conv
+                model_path = config["model_path"]
+
+                data_scaled = scaler.fit_transform(_df_full[features])
+                sequences = np.array([data_scaled[i:i + TIME_STEPS] for i in range(len(data_scaled) - TIME_STEPS + 1)])
+
+                model = load_model(model_path, compile=False)
+                reconstructed = model.predict(sequences, batch_size=256, verbose=0)
+
+                errors = np.mean(np.square(sequences - reconstructed), axis=(1, 2))
+                pca_reducer = PCA(n_components=1)
+                signatures_1d = pca_reducer.fit_transform(reconstructed.reshape(len(reconstructed), -1))
+
+                anomaly_scores = np.clip(errors / 0.001, 0, 1.0)
+
+                return {"signatures_1d": signatures_1d, "anomaly_scores": anomaly_scores}
+
+    except Exception as e:
+        st.error(f"Erreur dans l'analyse de {config['csv_path']}: {e}")
+        return None
+
 
 
 # =============================================================================
@@ -135,7 +184,7 @@ config = ROBOT_CONFIG[selected_robot_name]
 full_df = load_and_preprocess_data(config["csv_path"])
 analytics_results = None
 if full_df is not None:
-    analytics_results = setup_and_generate_all_analytics(full_df, config["encoder_path"], config["processor_path"])
+    analytics_results = setup_and_generate_all_analytics(full_df, config)
 
 # Fonction pour réinitialiser l'état de la simulation
 def reset_simulation_state():
@@ -212,13 +261,27 @@ if analytics_results is not None:
             with st.expander(f"Cliquer pour voir les détails des capteurs de {selected_robot_name}", expanded=False):
                 st.markdown("##### Données Brutes des Capteurs")
                 cols = st.columns(3)
-                for i, feature in enumerate(FEATURES_TO_PLOT):
+                if config["type"] == "robot":
+                    features_to_plot = FEATURES_TO_PLOT 
+                elif config["type"] == "rail":
+                    features_to_plot = FEATURES_rail
+                elif config["type"] == "conveyor":
+                    features_to_plot = FEATURES_conv
+                else:
+                    features_to_plot = FEATURES_TO_PLOT   # fallback
+
+                for i, feature in enumerate(features_to_plot):
                     with cols[i % 3]:
                         st.markdown(f"**{feature.replace('_', ' ').title()}**")
-                        st.line_chart(st.session_state.df_history, x=TIME_COLUMN, y=feature, height=150)
+                        df_to_plot = st.session_state.df_history[[TIME_COLUMN, feature]].dropna()
+                        if not df_to_plot.empty:
+                            st.line_chart(df_to_plot.set_index(TIME_COLUMN), height=150)
+                        else:
+                            st.write("Pas encore de données disponibles")
 
         st.session_state.row_index += 1
         time.sleep(SIMULATION_SPEED)
+
 else:
     st.error("Impossible de démarrer. Vérifiez les chemins des fichiers et les logs d'erreurs affichés ci-dessus lors du chargement.")
 
